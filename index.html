@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青海大学 高性能与云计算研究所</title>
+    <!-- 引入 Layui -->
+    <link rel="stylesheet" href="./static/plugin/layui/css/layui.css">
+    <!-- 引入自定义样式 -->
+    <link rel="stylesheet" href="./static/css/style.css">
+</head>
+<body>
+
+    <!-- 头部导航 -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="./media/logo.png" alt="青海大学Logo" onerror="this.src='https://www.qhu.edu.cn/images/logo.png'">
+                <div class="logo-text">
+                    <h1>高性能与云计算研究所</h1>
+                    <p>Institute of High Performance and Cloud Computing</p>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="active">首页</a>
+                <a href="#">研究所简介</a>
+                <a href="#">研究所教师</a>
+                <a href="#">新闻动态</a>
+                <a href="#">科研项目</a>
+                <a href="#">论文发表</a>
+                <a href="#">科研成果</a>
+                <a href="#">联系我们</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="main-container">
+        
+        <div class="hero-shell">
+            <div class="hero-section">
+                <div class="layui-carousel hero-carousel" id="heroCarousel">
+                    <div carousel-item>
+                        <div class="hero-slide" style="background-image: url('./static/img/e52275765a21daced132f5c2b9ac1ac9.png');"></div>
+                        <div class="hero-slide" style="background-image: url('./static/img/5f6b4404c6ec7870b21014dee0f52c14.jpg');"></div>
+                        <div class="hero-slide" style="background-image: url('./static/img/7f62b075f39b117079f267e63cf7abe7.png');"></div>
+                    </div>
+                </div>
+                <div class="hero-overlay"></div>
+                <!-- <div class="hero-content">
+                    <h2>高性能赋能科研创新<br>云计算驱动智慧未来</h2>
+                    <p>面向国家战略需求，聚焦高性能计算与云计算关键技术研究<br>推动学科交叉融合，赋能科研创新与产业发展</p>
+                    <a href="#" class="hero-btn">了解更多 <i class="layui-icon layui-icon-right"></i></a>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="top-card-row">
+            <div class="top-card-column">
+                <div class="section-box top-info-box">
+                    <div class="section-title">研究所概况</div>
+                    <div class="section-subtitle">ABOUT US</div>
+                    <p class="about-text">
+                        青海大学高性能与云计算研究所致力于高性能计算、云计算、大数据、人工智能等领域的研究与应用。建设先进的计算与云平台，支撑科研创新与人才培养，服务区域经济社会发展。
+                    </p>
+                    <a href="#" class="btn-more">了解更多 <i class="layui-icon layui-icon-right"></i></a>
+                </div>
+            </div>
+            <div class="top-card-column">
+                <div class="section-box top-info-box">
+                    <div class="section-title">研究方向</div>
+                    <div class="section-subtitle">RESEARCH DIRECTIONS</div>
+                    <div class="platform-grid">
+                        <div class="platform-card">
+                            <i class="layui-icon layui-icon-layer platform-icon"></i>
+                            <h4>高性能计算</h4>
+                            <p>面向多处理器与集群系统的高性能计算环境，支撑复杂科学计算任务。</p>
+                            <a href="#">了解详情 <i class="layui-icon layui-icon-right"></i></a>
+                        </div>
+                        <div class="platform-card">
+                            <i class="layui-icon layui-icon-fire platform-icon"></i>
+                            <h4>深度学习</h4>
+                            <p>基于多层神经网络开展数据表征学习与智能建模，服务多类智能应用。</p>
+                            <a href="#">了解详情 <i class="layui-icon layui-icon-right"></i></a>
+                        </div>
+                        <div class="platform-card">
+                            <i class="layui-icon layui-icon-water platform-icon"></i>
+                            <h4>绿色计算</h4>
+                            <p>提升计算系统能效，降低数据中心能耗与碳排放，促进可持续发展。</p>
+                            <a href="#">了解详情 <i class="layui-icon layui-icon-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="platform-more-wrapper">
+                        <a href="#" class="btn-block-more">查看更多 <i class="layui-icon layui-icon-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 下半部分：三个等高区块 -->
+        <div class="bottom-card-row">
+            
+            <!-- 科研成果 -->
+            <div class="bottom-card-column">
+                <div class="section-box">
+                    <div class="section-title">科研成果</div>
+                    <div class="section-subtitle">RESEARCH ACHIEVEMENTS</div>
+                    <ul class="research-list">
+                        <li><i class="layui-icon layui-icon-release"></i> 高性能并行调度优化平台</li>
+                        <li><i class="layui-icon layui-icon-chart"></i> 多源异构数据融合分析系统</li>
+                        <li><i class="layui-icon layui-icon-component"></i> 云边协同计算实验平台</li>
+                        <li><i class="layui-icon layui-icon-auz"></i> 智能图像识别与监测原型</li>
+                        <li><i class="layui-icon layui-icon-console"></i> 低碳数据中心能效评估方法</li>
+                        <li><i class="layui-icon layui-icon-vercode"></i> 科研支撑软件与工具链成果</li>
+                    </ul>
+                    <a href="#" class="btn-more">查看成果 <i class="layui-icon layui-icon-right"></i></a>
+                </div>
+            </div>
+
+            <!-- 新闻动态 -->
+            <div class="bottom-card-column">
+                <div class="section-box">
+                    <div class="section-title">新闻动态</div>
+                    <div class="section-subtitle">NEWS</div>
+                    <ul class="news-list">
+                        <li>
+                            <a href="#" title="青海大学高性能与云计算研究所成立大会顺利举行">青海大学高性能与云计算研究所成立大会顺利举行</a>
+                            <span class="news-date">2024-05-20</span>
+                        </li>
+                        <li>
+                            <a href="#" title="研究所在高性能计算领域取得系列研究进展">研究所在高性能计算领域取得系列研究进展</a>
+                            <span class="news-date">2024-05-15</span>
+                        </li>
+                        <li>
+                            <a href="#" title="研究所与多家单位签署合作协议，共建联合创新平台">研究所与多家单位签署合作协议，共建平台</a>
+                            <span class="news-date">2024-05-10</span>
+                        </li>
+                        <li>
+                            <a href="#" title="研究所支撑的科研项目在国际期刊发表重要成果">研究所支撑的科研项目在国际期刊发表重要成果</a>
+                            <span class="news-date">2024-05-05</span>
+                        </li>
+                        <li>
+                            <a href="#" title="高性能计算与云计算学术论坛在青海大学成功举办">高性能计算与云计算学术论坛在青海大学成功举办</a>
+                            <span class="news-date">2024-04-28</span>
+                        </li>
+                    </ul>
+                    <a href="#" class="btn-more">查看更多 <i class="layui-icon layui-icon-right"></i></a>
+                </div>
+            </div>
+
+            <!-- 论文发表 -->
+            <div class="bottom-card-column">
+                <div class="section-box">
+                    <div class="section-title">论文发表</div>
+                    <div class="section-subtitle">PUBLICATIONS</div>
+                    <p class="coop-text">
+                        围绕高性能计算、云计算、人工智能与数据处理等方向，
+                        持续在高水平期刊和重要学术会议发表研究论文，形成稳定学术产出。
+                    </p>
+                    <a href="#" class="btn-more">查看论文 <i class="layui-icon layui-icon-right"></i></a>
+                    
+                    <div class="coop-stats">
+                        <div class="stat-item">
+                            <h3>100+</h3>
+                            <p>发表论文</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>30+</h3>
+                            <p>SCI/EI 收录</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>20+</h3>
+                            <p>国际会议</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>10+</h3>
+                            <p>高被引成果</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="./media/logo.png" alt="Logo" onerror="this.src='https://www.qhu.edu.cn/images/logo.png'">
+                </div>
+                <div class="footer-info">
+                    <p>© 2026 青海大学高性能与云计算研究所 版权所有</p>
+                    <!-- <p>青ICP备 05000154号-1</p> -->
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="#">隐私政策</a>
+                <a href="#">网站地图</a>
+                <a href="#">联系我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 引入 Layui JS -->
+    <script src="./static/plugin/layui/layui.js"></script>
+    <script>
+        layui.use(['element', 'carousel'], function(){
+            var element = layui.element;
+            var carousel = layui.carousel;
+
+            carousel.render({
+                elem: '#heroCarousel',
+                width: '100%',
+                height: '100%',
+                anim: 'fade',
+                autoplay: true,
+                interval: 5000,
+                arrow: 'hover',
+                indicator: 'inside'
+            });
+        });
+    </script>
+</body>
+</html>
