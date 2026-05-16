@@ -9,10 +9,30 @@
     <!-- 引入自定义样式 -->
     <link rel="stylesheet" href="./static/css/style.css">
 </head>
-<body data-nav="home">
+<body>
 
     <!-- 头部导航 -->
-    <div id="site-header"></div>
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="./media/logo.png" alt="青海大学Logo" onerror="this.src='https://www.qhu.edu.cn/images/logo.png'">
+                <div class="logo-text">
+                    <h1>高性能与云计算研究所</h1>
+                    <p>Institute of High Performance and Cloud Computing</p>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="active">首页</a>
+                <a href="#">研究所简介</a>
+                <a href="#">研究所教师</a>
+                <a href="#">新闻动态</a>
+                <a href="#">科研项目</a>
+                <a href="#">论文发表</a>
+                <a href="#">科研成果</a>
+                <a href="#">联系我们</a>
+            </nav>
+        </div>
+    </header>
 
     <!-- 主体内容 -->
     <div class="main-container">
@@ -24,9 +44,9 @@
                         <div class="hero-slide" style="background-image: url('./static/img/e52275765a21daced132f5c2b9ac1ac9.png');"></div>
                         <div class="hero-slide" style="background-image: url('./static/img/5f6b4404c6ec7870b21014dee0f52c14.jpg');"></div>
                         <div class="hero-slide" style="background-image: url('./static/img/7f62b075f39b117079f267e63cf7abe7.png');"></div>
-                    </div> 
+                    </div>
                 </div>
-                <div class="hero-overlay"></div> 
+                <div class="hero-overlay"></div>
                 <!-- <div class="hero-content">
                     <h2>高性能赋能科研创新<br>云计算驱动智慧未来</h2>
                     <p>面向国家战略需求，聚焦高性能计算与云计算关键技术研究<br>推动学科交叉融合，赋能科研创新与产业发展</p>
@@ -156,7 +176,7 @@
                             <h3>10+</h3>
                             <p>高被引成果</p>
                         </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
 
@@ -186,41 +206,19 @@
     <!-- 引入 Layui JS -->
     <script src="./static/plugin/layui/layui.js"></script>
     <script>
-        function loadSharedHeader() {
-            return fetch('./templates/base.html')
-                .then(function(response) {
-                    return response.text();
-                })
-                .then(function(html) {
-                    var headerHost = document.getElementById('site-header');
-                    headerHost.innerHTML = html;
+        layui.use(['element', 'carousel'], function(){
+            var element = layui.element;
+            var carousel = layui.carousel;
 
-                    var currentNav = document.body.dataset.nav;
-                    var activeLink = headerHost.querySelector('[data-nav="' + currentNav + '"]');
-                    if (activeLink) {
-                        activeLink.classList.add('active');
-                    }
-                })
-                .catch(function(error) {
-                    console.error('Header load failed:', error);
-                });
-        }
-
-        loadSharedHeader().finally(function() {
-            layui.use(['element', 'carousel'], function(){
-                var element = layui.element;
-                var carousel = layui.carousel;
-
-                carousel.render({
-                    elem: '#heroCarousel',
-                    width: '100%',
-                    height: '100%',
-                    anim: 'fade',
-                    autoplay: true,
-                    interval: 5000,
-                    arrow: 'hover',
-                    indicator: 'inside'
-                });
+            carousel.render({
+                elem: '#heroCarousel',
+                width: '100%',
+                height: '100%',
+                anim: 'fade',
+                autoplay: true,
+                interval: 5000,
+                arrow: 'hover',
+                indicator: 'inside'
             });
         });
     </script>
