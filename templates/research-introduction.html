@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>研究所简介 - 青海大学高性能与云计算研究所</title>
+    <link rel="stylesheet" href="../static/plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <style>
+        .intro-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5em;
+        }
+        .page-intro {
+            display: grid;
+            grid-template-columns: 16em minmax(0, 1fr);
+            gap: 1.4em;
+            align-items: stretch;
+        }
+        .page-side-nav {
+            background: rgba(255,255,255,0.76);
+            border: 1px solid rgba(13, 59, 133, 0.08);
+            border-radius: 0.9em;
+            padding: 1.4em 1.2em;
+            box-shadow: 0 0.6em 2em rgba(7, 31, 71, 0.05);
+            backdrop-filter: blur(0.6em);
+        }
+        .page-side-nav h3 {
+            margin: 0 0 0.85em;
+            color: var(--primary-color);
+            font-size: 1.214em;
+        }
+        .page-side-nav a {
+            display: block;
+            padding: 0.8em 0.95em;
+            margin-top: 0.45em;
+            border-radius: 0.6em;
+            color: var(--text-color);
+            text-decoration: none;
+            background: transparent;
+            transition: 0.25s ease;
+        }
+        .page-side-nav a:hover {
+            background: rgba(13, 59, 133, 0.08);
+            color: var(--primary-color);
+        }
+        .page-summary {
+            padding: 2em 2.2em;
+            border-radius: 0.95em;
+            background: linear-gradient(135deg, rgba(255,255,255,0.94), rgba(255,255,255,0.82));
+            border: 1px solid rgba(13, 59, 133, 0.08);
+            box-shadow: 0 0.8em 2.4em rgba(7, 31, 71, 0.06);
+        }
+        .page-summary .section-title {
+            font-size: 2em;
+            margin-bottom: 0.3em;
+        }
+        .page-summary .section-subtitle {
+            margin-bottom: 1.2em;
+        }
+        .page-summary p,
+        .direction-detail p,
+        .direction-points li {
+            font-size: 1em;
+            line-height: 1.95;
+            color: var(--text-light);
+        }
+        .page-summary p + p,
+        .direction-detail p + p {
+            margin-top: 0.9em;
+        }
+        .summary-meta {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.9em;
+            margin-top: 1.5em;
+        }
+        .summary-meta-item {
+            padding: 1em 1.05em;
+            border-radius: 0.75em;
+            background: linear-gradient(180deg, rgba(13, 59, 133, 0.08), rgba(13, 59, 133, 0.03));
+            border: 1px solid rgba(13, 59, 133, 0.08);
+        }
+        .summary-meta-item h4 {
+            margin: 0 0 0.5em;
+            font-size: 1.071em;
+            color: var(--primary-color);
+        }
+        .summary-meta-item p {
+            margin: 0;
+            font-size: 0.929em;
+            line-height: 1.75;
+            color: var(--text-light);
+        }
+        .direction-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25em;
+        }
+        .direction-row {
+            display: grid;
+            grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
+            gap: 1.35em;
+            align-items: stretch;
+        }
+        .direction-row:nth-child(even) {
+            grid-template-columns: minmax(0, 1.16fr) minmax(0, 0.84fr);
+        }
+        .direction-row:nth-child(even) .direction-label {
+            order: 2;
+        }
+        .direction-row:nth-child(even) .direction-detail {
+            order: 1;
+        }
+        .direction-label,
+        .direction-detail {
+            border-radius: 0.95em;
+            box-sizing: border-box;
+        }
+        .direction-label {
+            padding: 1.7em 1.6em;
+            background: linear-gradient(145deg, rgba(13, 59, 133, 0.94), rgba(34, 104, 194, 0.78));
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100%;
+            box-shadow: 0 0.9em 2.4em rgba(13, 59, 133, 0.18);
+        }
+        .direction-index {
+            font-size: 0.857em;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.72);
+        }
+        .direction-label h3 {
+            margin: 0.55em 0 0.45em;
+            font-size: 1.786em;
+            line-height: 1.2;
+        }
+        .direction-label p {
+            margin: 0;
+            font-size: 0.929em;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.86);
+        }
+        .direction-detail {
+            padding: 1.7em 1.8em;
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(13, 59, 133, 0.08);
+            box-shadow: 0 0.8em 2.2em rgba(7, 31, 71, 0.06);
+        }
+        .direction-detail h4 {
+            margin: 0 0 0.85em;
+            font-size: 1.143em;
+            color: var(--primary-color);
+        }
+        .direction-points {
+            margin: 1em 0 0;
+            padding-left: 1.2em;
+        }
+        .direction-points li + li {
+            margin-top: 0.5em;
+        }
+        .closing-panel {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 1.25em;
+        }
+        .closing-panel .section-box {
+            margin-bottom: 0;
+        }
+        .closing-panel ul {
+            margin: 0;
+            padding-left: 1.2em;
+        }
+        .closing-panel li {
+            color: var(--text-light);
+            line-height: 1.9;
+        }
+        .closing-panel li + li {
+            margin-top: 0.45em;
+        }
+        @media screen and (max-width: 768px) {
+            .page-intro,
+            .summary-meta,
+            .direction-row,
+            .direction-row:nth-child(even),
+            .closing-panel {
+                grid-template-columns: 1fr;
+            }
+            .page-summary {
+                padding: 1.35em;
+            }
+            .page-summary .section-title {
+                font-size: 1.714em;
+            }
+            .direction-row:nth-child(even) .direction-label,
+            .direction-row:nth-child(even) .direction-detail {
+                order: initial;
+            }
+            .direction-label,
+            .direction-detail,
+            .page-side-nav {
+                padding: 1.25em;
+            }
+            .direction-label h3 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="../media/logo.png" alt="青海大学Logo" onerror="this.src='https://www.qhu.edu.cn/images/logo.png'">
+                <div class="logo-text">
+                    <h1>高性能与云计算研究所</h1>
+                    <p>Institute of High Performance and Cloud Computing</p>
+                </div>
+            </div>
+            <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="siteNav">
+                <i class="layui-icon layui-icon-spread-left"></i>
+                <span>导航</span>
+            </button>
+            <nav class="nav-menu" id="siteNav">
+                <a href="../index.html">首页</a>
+                <a href="./research-introduction.html" class="active">研究所简介</a>
+                <a href="#">研究所教师</a>
+                <a href="#">新闻动态</a>
+                <a href="#">科研项目</a>
+                <a href="#">论文发表</a>
+                <a href="#">科研成果</a>
+                <a href="#">联系我们</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-container intro-stack">
+        <section class="direction-section">
+            <article class="direction-row" id="direction-hpc">
+                <div class="direction-label">
+                    <div>
+                        <div class="direction-index">Direction 01</div>
+                        <h3>高性能计算</h3>
+                        <p>围绕多处理器、集群和并行环境开展研究，是研究所整体方向体系的基础支撑。</p>
+                    </div>
+                </div>
+                <div class="direction-detail">
+                    <h4>方向介绍</h4>
+                    <p>高性能计算面向由大量处理器或计算节点构成的计算环境，通过并行算法和协同调度机制，把复杂问题拆解为可并行执行的子任务，在集群各节点上同步推进计算与结果汇总，从而显著缩短大型任务的处理时间。</p>
+                    <p>在这一方向中，研究重点包括并行问题划分、节点间数据交换、运行时负载均衡、高吞吐任务组织以及分布式协同机制。研究所关注高性能集群在复杂科学计算、工程模拟和数据密集型分析中的适配能力，并推动相关方法在多学科科研场景中的应用。</p>
+                    <ul class="direction-points">
+                        <li>典型应用包括气象预报、流体力学、地质模拟、计算化学与生命科学计算。</li>
+                        <li>重点能力包括并行任务划分、分布式协同与高吞吐任务执行机制。</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="direction-row" id="direction-graph">
+                <div class="direction-label">
+                    <div>
+                        <div class="direction-index">Direction 02</div>
+                        <h3>图计算系统</h3>
+                        <p>面向海量图数据的存储、分析与计算，支撑复杂关联结构的高效处理。</p>
+                    </div>
+                </div>
+                <div class="direction-detail">
+                    <h4>方向介绍</h4>
+                    <p>图计算系统用于处理大规模图结构数据，适合社交网络分析、知识图谱、推荐系统、交通网络与网络安全等场景。随着 Web、大数据与智能分析的发展，图规模迅速扩大，天然图结构往往呈现高度倾斜分布，这对图遍历、图分析和图挖掘带来了显著挑战。</p>
+                    <p>研究所关注单机与分布式图处理系统的高效实现，涵盖以内存和核外处理为基础的多类图处理架构，并研究以遍历为中心和以计算为中心的图算法在不同硬件和系统环境中的优化方法。</p>
+                    <ul class="direction-points">
+                        <li>典型任务包括图遍历、最短路径、连通分量、PageRank 与三角计数等。</li>
+                        <li>典型应用覆盖语义网络分析、生物信息图、推荐系统与交通流图计算。</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="direction-row" id="direction-dl">
+                <div class="direction-label">
+                    <div>
+                        <div class="direction-index">Direction 03</div>
+                        <h3>深度学习</h3>
+                        <p>利用多层神经网络学习数据的层次化表示，支撑多类型智能建模任务。</p>
+                    </div>
+                </div>
+                <div class="direction-detail">
+                    <h4>方向介绍</h4>
+                    <p>深度学习是机器学习的重要分支，通过多层神经网络对文字、图像、声音等数据进行分层表征学习，使系统具备更接近人工智能目标的分析与识别能力。该方向在模式识别、数据建模和复杂决策任务中已展现出显著优势。</p>
+                    <p>研究所围绕深度学习模型训练、推理优化和应用适配开展研究，重点关注其在搜索技术、数据挖掘、推荐系统、自然语言处理、多媒体理解与智能感知等方向的扩展与落地。</p>
+                    <ul class="direction-points">
+                        <li>强化模型训练效率、表示学习能力与应用可迁移性。</li>
+                        <li>服务推荐系统、语音处理、文本分析和多模态智能等任务。</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="direction-row" id="direction-cv">
+                <div class="direction-label">
+                    <div>
+                        <div class="direction-index">Direction 04</div>
+                        <h3>计算机视觉</h3>
+                        <p>推动机器对图像与视频内容的识别、分析与理解，服务真实场景智能化。</p>
+                    </div>
+                </div>
+                <div class="direction-detail">
+                    <h4>方向介绍</h4>
+                    <p>计算机视觉是人工智能的重要组成部分，目标是使系统能够对图像和视频进行识别、检测、跟踪和语义理解。随着感知设备普及和智能应用加速发展，视觉技术已成为目前落地范围最广的人工智能技术之一。</p>
+                    <p>研究所关注视觉算法在复杂环境中的稳定性与实用性，推动该方向在安防监测、自动驾驶辅助、智慧医疗、消费终端和教育应用中的落地，同时关注数据治理和隐私保护等现实问题。</p>
+                    <ul class="direction-points">
+                        <li>重点研究识别、检测、跟踪与视频内容理解等核心任务。</li>
+                        <li>关注 5G、边缘智能与多场景部署对视觉技术演进的推动作用。</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="direction-row" id="direction-green">
+                <div class="direction-label">
+                    <div>
+                        <div class="direction-index">Direction 05</div>
+                        <h3>绿色计算</h3>
+                        <p>面向计算基础设施的能效提升与可持续发展，推动低碳算力建设。</p>
+                    </div>
+                </div>
+                <div class="direction-detail">
+                    <h4>方向介绍</h4>
+                    <p>绿色计算强调在计算系统建设与运行过程中提高能源利用效率、减少资源消耗、降低电子废弃物影响，并通过节能设备、智能调度和系统优化手段，提升整体基础设施的可持续运行能力。</p>
+                    <p>研究所关注数据中心多维运行数据采集、能效建模、资源调度优化与节能策略设计，希望通过全局视角构建高效、智能、低碳的先进计算环境，为区域算力基础设施建设提供方法支撑。</p>
+                    <ul class="direction-points">
+                        <li>研究重点包括节能调度、资源优化配置、低碳运维与能效评估方法。</li>
+                        <li>服务绿色数据中心、区域算力基础设施与可持续科研平台建设。</li>
+                    </ul>
+                </div>
+            </article>
+        </section>
+
+        <section class="closing-panel">
+            <div class="section-box">
+                <div class="section-title">典型应用场景</div>
+                <div class="section-subtitle">APPLICATION SCENARIOS</div>
+                <ul>
+                    <li>面向科学计算和工程模拟的大规模并行任务。</li>
+                    <li>面向知识图谱、推荐系统与网络分析的图数据处理任务。</li>
+                    <li>面向图像、视频、文本与多模态数据的智能分析任务。</li>
+                    <li>面向绿色数据中心的能效提升与低碳算力优化任务。</li>
+                </ul>
+            </div>
+            <div class="section-box">
+                <div class="section-title">发展思路</div>
+                <div class="section-subtitle">DEVELOPMENT APPROACH</div>
+                <p>研究所将持续围绕“平台支撑、方向突破、应用转化、人才培养”四条主线推进建设，通过共享平台、联合项目和科研训练机制，推动研究成果从理论方法逐步走向可验证、可部署、可服务的实际能力。</p>
+                <p>未来，研究所将进一步强化先进计算与区域需求的深度结合，让高性能算力、云端资源与智能方法真正服务于科研创新与产业发展。</p>
+            </div>
+        </section>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="../media/logo.png" alt="Logo" onerror="this.src='https://www.qhu.edu.cn/images/logo.png'">
+                </div>
+                <div class="footer-info">
+                    <p>© 2026 青海大学高性能与云计算研究所 版权所有</p>
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="#">隐私政策</a>
+                <a href="#">网站地图</a>
+                <a href="#">联系我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/plugin/layui/layui.js"></script>
+    <script>
+        layui.use(['element'], function(){
+            var navToggle = document.querySelector('.nav-toggle');
+            var navMenu = document.getElementById('siteNav');
+
+            if (navToggle && navMenu) {
+                var setNavState = function(isOpen) {
+                    var icon = navToggle.querySelector('.layui-icon');
+
+                    navMenu.classList.toggle('is-open', isOpen);
+                    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+                    if (icon) {
+                        icon.className = 'layui-icon ' + (isOpen ? 'layui-icon-close' : 'layui-icon-spread-left');
+                    }
+                };
+
+                navToggle.addEventListener('click', function() {
+                    setNavState(!navMenu.classList.contains('is-open'));
+                });
+
+                navMenu.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth <= 768) {
+                            setNavState(false);
+                        }
+                    });
+                });
+
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768) {
+                        setNavState(false);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
