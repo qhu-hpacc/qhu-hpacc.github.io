@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科研成果 - 青海大学高性能与云计算研究所</title>
+    <link rel="stylesheet" href="../static/plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <style>
+        .achievements-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5em;
+        }
+
+        /* 页面标题 */
+        .page-hero {
+            text-align: center;
+            padding: 1.4em 0 0.6em;
+        }
+        .page-hero h2 {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: var(--text-color);
+            margin: 0 0 0.55em;
+            letter-spacing: 0.04em;
+        }
+        .hero-divider {
+            width: 2.8em;
+            height: 3px;
+            background: #c0c8d8;
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* Tab 容器 */
+        .tab-container {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+        }
+
+        /* Tab 导航 */
+        .tab-nav {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 1.8em;
+            gap: 0.2em;
+        }
+        .tab-btn {
+            padding: 1.05em 1.6em;
+            font-size: 1.071em;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            color: var(--text-light);
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            cursor: pointer;
+            transition: color 0.22s, border-color 0.22s;
+            white-space: nowrap;
+        }
+        .tab-btn:hover { color: var(--primary-color); }
+        .tab-btn.active {
+            color: var(--primary-color);
+            font-weight: bold;
+            border-bottom-color: var(--primary-color);
+        }
+
+        /* Tab 内容区 */
+        .tab-body {
+            padding: 2.2em 2.2em 2.8em;
+        }
+        html { overflow-y: scroll; }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        body > .main-container {
+            flex: 1;
+        }
+        .tab-panel { display: none; }
+        .tab-panel.active {
+            display: block;
+            animation: tabFadeIn 0.28s ease;
+        }
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 分组标题 */
+        .content-group { margin-bottom: 2.8em; }
+        .content-group:last-child { margin-bottom: 0; }
+        .group-title {
+            font-size: 1.286em;
+            font-weight: bold;
+            color: var(--text-color);
+            margin: 0 0 1.2em;
+            padding-left: 0.75em;
+            border-left: 3px solid var(--primary-color);
+            line-height: 1.3;
+        }
+
+        /* 照片网格（学术交流） */
+        .photo-grid {
+            display: grid;
+            gap: 0.85em;
+        }
+        .photo-grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .photo-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+        .photo-item {
+            border-radius: 0.65em;
+            overflow: hidden;
+            aspect-ratio: 4 / 3;
+            background: #e4eaf2;
+            cursor: zoom-in;
+        }
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .photo-item:hover img { transform: scale(1.06); }
+
+        /* 证书网格（奖励荣誉） */
+        .cert-grid {
+            display: grid;
+            gap: 1em;
+        }
+        .cert-grid-4 { grid-template-columns: repeat(4, 1fr); }
+        .cert-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+        .cert-item {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 0.8em;
+            padding: 1.1em;
+            height: 230px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            cursor: zoom-in;
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+        }
+        .cert-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(13, 59, 133, 0.1);
+        }
+        .cert-item img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* 竞赛卡片（科技竞赛） */
+        .comp-intro {
+            font-size: 0.971em;
+            color: var(--text-light);
+            line-height: 1.9;
+            margin: 0 0 2em;
+        }
+        .comp-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5em;
+        }
+        .comp-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 1em;
+            padding: 2.4em 1.8em;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1em;
+            min-height: 180px;
+        }
+        .comp-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(13, 59, 133, 0.1);
+        }
+        .comp-card img {
+            max-width: 180px;
+            max-height: 110px;
+            object-fit: contain;
+        }
+        .comp-card p {
+            font-size: 0.929em;
+            color: var(--text-light);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* 灯箱 */
+        #lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.28s;
+            padding: 2em;
+            box-sizing: border-box;
+        }
+        #lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .lb-img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 0.5em;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+            display: block;
+        }
+        .lb-close {
+            position: absolute;
+            top: 1.2em;
+            right: 1.6em;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 2.2em;
+            cursor: pointer;
+            background: none;
+            border: none;
+            line-height: 1;
+            padding: 0.15em 0.3em;
+            border-radius: 0.3em;
+            transition: color 0.2s, background 0.2s;
+        }
+        .lb-close:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* 响应式 */
+        @media screen and (max-width: 1024px) {
+            .photo-grid-4 { grid-template-columns: repeat(3, 1fr); }
+            .cert-grid-4  { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media screen and (max-width: 768px) {
+            .tab-body { padding: 1.25em 1.1em 2em; }
+            .tab-btn   { padding: 0.85em 1.1em; font-size: 1em; }
+            .photo-grid-3,
+            .photo-grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .cert-grid-3,
+            .cert-grid-4  { grid-template-columns: repeat(2, 1fr); }
+            .comp-grid { grid-template-columns: 1fr; max-width: 380px; }
+            .cert-item { height: 180px; }
+            .page-hero h2 { font-size: 1.714em; }
+        }
+        @media screen and (max-width: 480px) {
+            .photo-grid-3,
+            .photo-grid-4 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 头部导航 -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="../media/logo.png" alt="青海大学Logo" onerror="this.src='https://www.qhu.edu.cn/images/logo.png'">
+                <div class="logo-text">
+                    <h1>高性能与云计算研究所</h1>
+                    <p>Institute of High Performance and Cloud Computing</p>
+                </div>
+            </div>
+            <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="siteNav">
+                <i class="layui-icon layui-icon-spread-left"></i>
+                <span>导航</span>
+            </button>
+            <nav class="nav-menu" id="siteNav">
+                <a href="../index.html">首页</a>
+                <a href="./research-introduction.html">研究所简介</a>
+                <a href="#">研究所教师</a>
+                <a href="#">新闻动态</a>
+                <a href="#">科研项目</a>
+                <a href="./papers.html">论文发表</a>
+                <a href="./achievements.html" class="active">科研成果</a>
+                <a href="./contact.html">联系我们</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="main-container achievements-stack">
+
+        <!-- 页面标题 -->
+        <div class="page-hero">
+            <h2>科研成果</h2>
+            <div class="hero-divider"></div>
+        </div>
+
+        <!-- Tab 容器 -->
+        <div class="tab-container">
+
+            <!-- Tab 导航 -->
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="exchange">学术交流</button>
+                <button class="tab-btn" data-tab="awards">奖励荣誉</button>
+                <button class="tab-btn" data-tab="competition">科技竞赛</button>
+            </div>
+
+            <!-- Tab 内容 -->
+            <div class="tab-body">
+
+                <!-- ─── 学术交流 ─── -->
+                <div class="tab-panel active" id="tab-exchange">
+
+                    <div class="content-group">
+                        <h3 class="group-title">PPoPP 2026</h3>
+                        <div class="photo-grid photo-grid-3">
+                            <div class="photo-item"><img src="../static/img/学术交流/PPoPP%202026/ppopp1.jpg" alt="PPoPP 2026"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/PPoPP%202026/ppopp2.jpg" alt="PPoPP 2026"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/PPoPP%202026/ppopp3.jpg" alt="PPoPP 2026"></div>
+                        </div>
+                    </div>
+
+                    <div class="content-group">
+                        <h3 class="group-title">CNCC 2019</h3>
+                        <div class="photo-grid photo-grid-4">
+                            <div class="photo-item"><img src="../static/img/学术交流/CNCC%202019/x1.jpg" alt="CNCC 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/CNCC%202019/x2.jpg" alt="CNCC 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/CNCC%202019/x3.jpg" alt="CNCC 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/CNCC%202019/x4.jpg" alt="CNCC 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/CNCC%202019/x5.jpg" alt="CNCC 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/CNCC%202019/x6.jpg" alt="CNCC 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/CNCC%202019/x7.jpg" alt="CNCC 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/CNCC%202019/x8.jpg" alt="CNCC 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/CNCC%202019/x9.jpg" alt="CNCC 2019"></div>
+                        </div>
+                    </div>
+
+                    <div class="content-group">
+                        <h3 class="group-title">HPC China 2019</h3>
+                        <div class="photo-grid photo-grid-4">
+                            <div class="photo-item"><img src="../static/img/学术交流/HPC%20China%202019/x101.jpg" alt="HPC China 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/HPC%20China%202019/x102.jpg" alt="HPC China 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/HPC%20China%202019/x103.jpg" alt="HPC China 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/HPC%20China%202019/x104.jpg" alt="HPC China 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/HPC%20China%202019/x105.jpg" alt="HPC China 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/HPC%20China%202019/x106.jpg" alt="HPC China 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/HPC%20China%202019/x107.jpg" alt="HPC China 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/HPC%20China%202019/x108.jpg" alt="HPC China 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/HPC%20China%202019/x109.jpg" alt="HPC China 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/HPC%20China%202019/x110.jpg" alt="HPC China 2019"></div>
+                            <div class="photo-item"><img src="../static/img/学术交流/HPC%20China%202019/x111.jpg" alt="HPC China 2019"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ─── 奖励荣誉 ─── -->
+                <div class="tab-panel" id="tab-awards">
+
+                    <div class="content-group">
+                        <h3 class="group-title">超算类</h3>
+                        <div class="cert-grid cert-grid-4">
+                            <div class="cert-item"><img src="../static/img/奖励荣誉/超算类/ASC2025_1.png" alt="ASC 2025 一等奖"></div>
+                            <div class="cert-item"><img src="../static/img/奖励荣誉/超算类/h1.png" alt="超算奖励"></div>
+                            <div class="cert-item"><img src="../static/img/奖励荣誉/超算类/h2.png" alt="超算奖励"></div>
+                            <div class="cert-item"><img src="../static/img/奖励荣誉/超算类/h7.png" alt="超算奖励"></div>
+                        </div>
+                    </div>
+
+                    <div class="content-group">
+                        <h3 class="group-title">创新设计类</h3>
+                        <div class="cert-grid cert-grid-3">
+                            <div class="cert-item"><img src="../static/img/奖励荣誉/创新设计类/h3.png" alt="创新设计奖"></div>
+                            <div class="cert-item"><img src="../static/img/奖励荣誉/创新设计类/h4.png" alt="创新设计奖"></div>
+                            <div class="cert-item"><img src="../static/img/奖励荣誉/创新设计类/h5.jpg" alt="创新设计奖"></div>
+                        </div>
+                    </div>
+
+                    <div class="content-group">
+                        <h3 class="group-title">大数据类</h3>
+                        <div class="cert-grid cert-grid-3">
+                            <div class="cert-item"><img src="../static/img/奖励荣誉/大数据类/h6.png" alt="大数据奖励"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ─── 科技竞赛 ─── -->
+                <div class="tab-panel" id="tab-competition">
+
+                    <div class="content-group">
+                        <h3 class="group-title">参赛平台</h3>
+                        <p class="comp-intro">研究所师生积极参与国内外高水平科技竞赛，在超算应用、并行计算等领域多次斩获佳绩。以下为研究所长期参与的重要赛事平台。</p>
+                        <div class="comp-grid">
+                            <div class="comp-card">
+                                <img src="../static/img/科技竞赛/asc.png" alt="ASC">
+                            </div>
+                            <div class="comp-card">
+                                <img src="../static/img/科技竞赛/PAC.png" alt="PAC 全国并行应用挑战赛">
+                                <p>全国并行应用挑战赛</p>
+                            </div>
+                            <div class="comp-card">
+                                <img src="../static/img/科技竞赛/CPC.jpg" alt="CPC 国产CPU并行应用挑战赛">
+                                <p>国产CPU并行应用挑战赛</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div><!-- end tab-body -->
+        </div><!-- end tab-container -->
+
+    </div>
+
+    <!-- 灯箱 -->
+    <div id="lightbox">
+        <button class="lb-close" onclick="closeLightbox()">&#215;</button>
+        <img class="lb-img" src="" alt="图片预览">
+    </div>
+
+    <!-- 底部 -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="../media/logo.png" alt="Logo" onerror="this.src='https://www.qhu.edu.cn/images/logo.png'">
+                </div>
+                <div class="footer-info">
+                    <p>© 2026 青海大学高性能与云计算研究所 版权所有</p>
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="#">隐私政策</a>
+                <a href="#">网站地图</a>
+                <a href="./contact.html">联系我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/plugin/layui/layui.js"></script>
+    <script>
+        layui.use(['element'], function () {
+            var navToggle = document.querySelector('.nav-toggle');
+            var navMenu   = document.getElementById('siteNav');
+            if (navToggle && navMenu) {
+                var setNavState = function (isOpen) {
+                    var icon = navToggle.querySelector('.layui-icon');
+                    navMenu.classList.toggle('is-open', isOpen);
+                    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    if (icon) icon.className = 'layui-icon ' + (isOpen ? 'layui-icon-close' : 'layui-icon-spread-left');
+                };
+                navToggle.addEventListener('click', function () { setNavState(!navMenu.classList.contains('is-open')); });
+                navMenu.querySelectorAll('a').forEach(function (link) {
+                    link.addEventListener('click', function () { if (window.innerWidth <= 768) setNavState(false); });
+                });
+                window.addEventListener('resize', function () { if (window.innerWidth > 768) setNavState(false); });
+            }
+        });
+
+        /* Tab 切换 */
+        var tabNav = document.querySelector('.tab-nav');
+        document.querySelectorAll('.tab-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+                document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+
+                /* 若 tab 导航栏已滚出视口上方，平滑滚回使其可见 */
+                var navTop = tabNav.getBoundingClientRect().top;
+                if (navTop < 0) {
+                    var targetY = window.scrollY + navTop - 16;
+                    window.scrollTo({ top: targetY, behavior: 'smooth' });
+                }
+            });
+        });
+
+        /* 灯箱 */
+        document.querySelectorAll('.photo-item, .cert-item').forEach(function (item) {
+            item.addEventListener('click', function () {
+                document.querySelector('.lb-img').src = this.querySelector('img').src;
+                document.getElementById('lightbox').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('lightbox').addEventListener('click', function (e) {
+            if (e.target === this) closeLightbox();
+        });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLightbox(); });
+    </script>
+</body>
+</html>

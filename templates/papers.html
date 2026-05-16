@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>论文发表 - 青海大学高性能与云计算研究所</title>
+    <link rel="stylesheet" href="../static/plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <style>
+        .papers-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5em;
+        }
+        .page-hero {
+            text-align: center;
+            padding: 1.4em 0 0.6em;
+        }
+        .page-hero h2 {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: var(--text-color);
+            margin: 0 0 0.55em;
+            letter-spacing: 0.04em;
+        }
+        .hero-divider {
+            width: 2.8em;
+            height: 3px;
+            background: #c0c8d8;
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1em;
+        }
+        .stat-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 1.6em 1.2em;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            border-top: 3px solid var(--primary-color);
+        }
+        .stat-card h3 {
+            font-size: 2em;
+            color: var(--primary-color);
+            margin: 0 0 0.2em;
+            font-weight: bold;
+        }
+        .stat-card p {
+            font-size: 0.929em;
+            color: var(--text-light);
+            margin: 0;
+        }
+        .filter-section {
+            background: #fff;
+            border-radius: 8px;
+            padding: 1.4em 1.8em;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 0.9em;
+        }
+        .filter-row {
+            display: flex;
+            align-items: center;
+            gap: 0.6em;
+            flex-wrap: wrap;
+        }
+        .filter-label {
+            font-size: 0.929em;
+            color: var(--text-light);
+            margin-right: 0.2em;
+            white-space: nowrap;
+        }
+        .filter-btn {
+            padding: 0.4em 1em;
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            background: transparent;
+            color: var(--text-color);
+            font-size: 0.929em;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover { border-color: var(--secondary-color); color: var(--secondary-color); }
+        .filter-btn.active { background: var(--primary-color); border-color: var(--primary-color); color: #fff; }
+        .paper-list-box {
+            background: #fff;
+            border-radius: 8px;
+            padding: 0.5em 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+        .paper-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.2em;
+            padding: 1.4em 2em;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s;
+        }
+        .paper-item:last-child { border-bottom: none; }
+        .paper-item:hover { background: #fafbfd; }
+        .paper-year-badge {
+            flex-shrink: 0;
+            min-width: 3.2em;
+            padding: 0.3em 0.6em;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            border-radius: 0.4em;
+            font-size: 0.857em;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.4;
+            letter-spacing: 0.02em;
+            margin-top: 0.15em;
+        }
+        .paper-content { flex: 1; min-width: 0; }
+        .paper-title {
+            font-size: 1.05em;
+            font-weight: bold;
+            color: var(--text-color);
+            line-height: 1.55;
+            margin: 0 0 0.35em;
+        }
+        .paper-title a { color: inherit; text-decoration: none; transition: color 0.2s; }
+        .paper-title a:hover { color: var(--primary-color); }
+        .paper-venue {
+            font-size: 0.9em;
+            color: var(--text-light);
+            margin: 0 0 0.55em;
+            line-height: 1.5;
+        }
+        .paper-venue em { font-style: normal; color: var(--secondary-color); font-weight: 600; }
+        .paper-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5em;
+        }
+        .paper-tag {
+            display: inline-block;
+            padding: 0.18em 0.65em;
+            border-radius: 999px;
+            font-size: 0.79em;
+            font-weight: 500;
+        }
+        .tag-hpc   { background: rgba(13,59,133,0.08);   color: #0d3b85; }
+        .tag-graph { background: rgba(88,28,135,0.08);   color: #581c87; }
+        .tag-dl    { background: rgba(6,95,70,0.08);     color: #065f46; }
+        .tag-cv    { background: rgba(124,45,18,0.08);   color: #7c2d12; }
+        .tag-net   { background: rgba(14,116,144,0.08);  color: #0e7490; }
+        .tag-rank  { background: rgba(100,100,100,0.07); color: #555; }
+        .paper-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25em;
+            padding: 0.18em 0.6em;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.79em;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .paper-link:hover { border-color: var(--secondary-color); color: var(--secondary-color); }
+        .no-result {
+            display: none;
+            text-align: center;
+            padding: 3em 2em;
+            color: var(--text-light);
+        }
+        @media screen and (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media screen and (max-width: 768px) {
+            .paper-item { flex-direction: column; gap: 0.75em; padding: 1.2em 1.2em; }
+            .paper-year-badge { align-self: flex-start; }
+            .filter-section { padding: 1.1em 1.2em; }
+        }
+        @media screen and (max-width: 480px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat-card h3 { font-size: 1.6em; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="../media/logo.png" alt="青海大学Logo" onerror="this.src='https://www.qhu.edu.cn/images/logo.png'">
+                <div class="logo-text">
+                    <h1>高性能与云计算研究所</h1>
+                    <p>Institute of High Performance and Cloud Computing</p>
+                </div>
+            </div>
+            <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="siteNav">
+                <i class="layui-icon layui-icon-spread-left"></i>
+                <span>导航</span>
+            </button>
+            <nav class="nav-menu" id="siteNav">
+                <a href="../index.html">首页</a>
+                <a href="./research-introduction.html">研究所简介</a>
+                <a href="#">研究所教师</a>
+                <a href="#">新闻动态</a>
+                <a href="#">科研项目</a>
+                <a href="./papers.html" class="active">论文发表</a>
+                <a href="./achievements.html">科研成果</a>
+                <a href="./contact.html">联系我们</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-container papers-stack">
+
+        <div class="page-hero">
+            <h2>论文发表</h2>
+            <div class="hero-divider"></div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>100<span style="font-size:0.6em">+</span></h3>
+                <p>发表论文</p>
+            </div>
+            <div class="stat-card">
+                <h3>30<span style="font-size:0.6em">+</span></h3>
+                <p>SCI / EI 收录</p>
+            </div>
+            <div class="stat-card">
+                <h3>20<span style="font-size:0.6em">+</span></h3>
+                <p>国际会议论文</p>
+            </div>
+            <div class="stat-card">
+                <h3>10<span style="font-size:0.6em">+</span></h3>
+                <p>高被引成果</p>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-row">
+                <span class="filter-label">年份</span>
+                <button class="filter-btn year-btn active" data-year="all">全部</button>
+                <button class="filter-btn year-btn" data-year="2026">2026</button>
+                <button class="filter-btn year-btn" data-year="2025">2025</button>
+                <button class="filter-btn year-btn" data-year="2024">2024</button>
+                <button class="filter-btn year-btn" data-year="2022">2022</button>
+                <button class="filter-btn year-btn" data-year="2021">2021</button>
+                <button class="filter-btn year-btn" data-year="2020">2020</button>
+                <button class="filter-btn year-btn" data-year="2019">2019</button>
+                <button class="filter-btn year-btn" data-year="2018">2018</button>
+                <button class="filter-btn year-btn" data-year="2017">2017</button>
+                <button class="filter-btn year-btn" data-year="2016">2016</button>
+                <button class="filter-btn year-btn" data-year="2015">2015</button>
+            </div>
+            <div class="filter-row">
+                <span class="filter-label">方向</span>
+                <button class="filter-btn cat-btn active" data-cat="all">全部</button>
+                <button class="filter-btn cat-btn" data-cat="hpc">高性能计算</button>
+                <button class="filter-btn cat-btn" data-cat="graph">图计算</button>
+                <button class="filter-btn cat-btn" data-cat="dl">深度学习</button>
+                <button class="filter-btn cat-btn" data-cat="cv">计算机视觉</button>
+                <button class="filter-btn cat-btn" data-cat="net">网络系统</button>
+            </div>
+        </div>
+
+        <div class="paper-list-box">
+            <div id="paperList">
+
+                <!-- ===== 2026 ===== -->
+                <div class="paper-item" data-year="2026" data-cat="hpc">
+                    <div class="paper-year-badge">2026</div>
+                    <div class="paper-content">
+                        <p class="paper-title">PANA: A Fine-Grained Runtime-Adaptive Load Balancing for Parallel SpMV on Multicore CPUs</p>
+                        <p class="paper-venue"><em>PPoPP 2026</em> — ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-hpc">高性能计算</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                            <a href="https://dblp.dagstuhl.de/rec/conf/ppopp/BianZF0026.html" class="paper-link"><i class="layui-icon layui-icon-file" style="font-size:0.95em"></i> PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 2025 ===== -->
+                <div class="paper-item" data-year="2025" data-cat="graph">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">EDTC: Exact Triangle Counting for Dynamic Graphs on GPU</p>
+                        <p class="paper-venue"><em>ICDE 2025</em> — IEEE International Conference on Data Engineering</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-graph">图计算</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                            <a href="https://ieeexplore.ieee.org/document/11223785" class="paper-link"><i class="layui-icon layui-icon-file" style="font-size:0.95em"></i> PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="graph">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Exact triangle counting system for GPU dynamic graphs based on updated edges</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-graph">图计算</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="hpc">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Qklu: a two-dimensional block-cyclic sparse direct solver</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-hpc">高性能计算</span>
+                            <span class="paper-tag tag-rank">SCI</span>
+                            <span class="paper-tag tag-rank">CCF C</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="dl">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Robust low-rank representation on anchor graph with self-attention</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-dl">深度学习</span>
+                            <span class="paper-tag tag-rank">SCI</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="cv">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Octree-STCM: Octree-Based Spatio-Temporal Context Model for Lossless Geometry Compression of Dynamic Point Cloud</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-cv">计算机视觉</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="cv">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">面向 AVS 点云压缩标准的八叉树上下文模型优化</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-cv">计算机视觉</span>
+                            <span class="paper-tag tag-rank">CSCD</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="cv">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">基于 YOLOv5 和改进 DeeplabV3+ 的青藏高原植被提取算法</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-cv">计算机视觉</span>
+                            <span class="paper-tag tag-rank">CSCD</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="dl">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">基于梯度提升回归树的三江源植被指数预测方法研究</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-dl">深度学习</span>
+                            <span class="paper-tag tag-rank">CSCD</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="dl">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">A Fast and Lightweight Model for Causal Audio-Visual Speech Separation</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-dl">深度学习</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="cv">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Single Image Super-Resolution Through Image Pixel Information Clustering and Generative Adversarial Network</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-cv">计算机视觉</span>
+                            <span class="paper-tag tag-rank">SCI 中科院一区</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="dl">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Plastic Distillation and Local Class Augment for Federated Class Incremental Learning</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-dl">深度学习</span>
+                            <span class="paper-tag tag-rank">SCI 中科院一区</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="dl">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Collaborative pseudo-label transfer for few-shot unsupervised domain adaptation</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-dl">深度学习</span>
+                            <span class="paper-tag tag-rank">SCI</span>
+                            <span class="paper-tag tag-rank">CCF C</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="hpc">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Research on Parallel Weighted Back-Projection Algorithm on Multi-CPU</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-hpc">高性能计算</span>
+                            <span class="paper-tag tag-rank">CCF C</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2025" data-cat="hpc">
+                    <div class="paper-year-badge">2025</div>
+                    <div class="paper-content">
+                        <p class="paper-title">An Efficient Parallel Ordered Depth-First Search Strategy for Directed Acyclic Graphs</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-hpc">高性能计算</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 2024 ===== -->
+                <div class="paper-item" data-year="2024" data-cat="graph">
+                    <div class="paper-year-badge">2024</div>
+                    <div class="paper-content">
+                        <p class="paper-title">StepTC: Stepwise Triangle Counting on GPU with Two Efficient Set Intersection Methods</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-graph">图计算</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2024" data-cat="dl">
+                    <div class="paper-year-badge">2024</div>
+                    <div class="paper-content">
+                        <p class="paper-title">DisRot: boosting the generalization capability of few-shot learning</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-dl">深度学习</span>
+                            <span class="paper-tag tag-rank">SCI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2024" data-cat="cv">
+                    <div class="paper-year-badge">2024</div>
+                    <div class="paper-content">
+                        <p class="paper-title">A dual-difference change detection network for detecting building changes on high-resolution remote sensing images</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-cv">计算机视觉</span>
+                            <span class="paper-tag tag-rank">SCI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 2022 ===== -->
+                <div class="paper-item" data-year="2022" data-cat="graph">
+                    <div class="paper-year-badge">2022</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Large-Scale Graph Triangle-Counting on a single Machine using GPUs</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-graph">图计算</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2022" data-cat="hpc">
+                    <div class="paper-year-badge">2022</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Helmholtz solving and performance optimization in the Global/Regional Assimilation and Prediction System</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-hpc">高性能计算</span>
+                            <span class="paper-tag tag-rank">SCI 一区</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 2021 ===== -->
+                <div class="paper-item" data-year="2021" data-cat="graph">
+                    <div class="paper-year-badge">2021</div>
+                    <div class="paper-content">
+                        <p class="paper-title">DFOGraph: An I/O- and Communication-Efficient System for Distributed Fully-out-of-Core Graph Processing</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-graph">图计算</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 2020 ===== -->
+                <div class="paper-item" data-year="2020" data-cat="hpc">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">CSR2: A New Format for SIMD-accelerated SpMV</p>
+                        <p class="paper-venue"><em>CCGRID 2020</em></p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-hpc">高性能计算</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="hpc">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">ALBUS: A Method for Efficiently Processing SpMV Using SIMD and Load Balancing</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-hpc">高性能计算</span>
+                            <span class="paper-tag tag-rank">SCI 一区</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="cv">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">A Survey of Single Image Super Resolution Reconstruction</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-cv">计算机视觉</span>
+                            <span class="paper-tag tag-rank">SCI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="dl">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">An Adaptive and Fast Convergent Approach to Differentially Private Deep Learning</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2020</em> — Zhiying Xu, Shuyu Shi, Alex X. Liu, Jun Zhao, Lin Chen</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-dl">深度学习</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Supporting Multi-dimensional and Arbitrary Numbers of Ranks for Software Packet Scheduling</p>
+                        <p class="paper-venue"><em>IEEE IWQoS 2020</em> — Jiaqi Zheng, Ya-nan Jiang, Bingchuan Tian et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Optimizing NFV Chain Deployment in Software-defined Cellular Core</p>
+                        <p class="paper-venue"><em>IEEE JSAC 2020</em> — Jiaqi Zheng, Chen Tian, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Dynamic Speed Warping: Similarity-Based One-shot Learning for Device-free Gesture Signals</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2020</em> — Xun Wang, Ke Sun, Ting Zhao, Wei Wang, Qing Gu</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">SpiderMon: Towards Using Cell Towers as Illuminating Sources for Keystroke Monitoring</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2020</em> — Kang Ling, Yuntang Liu, Ke Sun et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Placing Wireless Chargers with Limited Mobility</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2020</em> — Haipeng Dai, Chaofeng Wu, Xiaoyu Wang et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Coeus: Consistent and Continuous Network Update in Software-Defined Networks</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2020</em> — Xin He, Jiaqi Zheng, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Maximizing Charging Utility with Obstacles through Fresnel Diffraction Model</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2020</em> — Chi Lin, Feng Gao, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Chronus+: Minimizing Switch Buffer Size during Network Updates in Timed SDNs</p>
+                        <p class="paper-venue"><em>IEEE ICDCS 2020</em> — Xin He, Jiaqi Zheng, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Learning for Exception: Dynamic Service Caching in 5G-Enabled MECs with Bursty User Demands</p>
+                        <p class="paper-venue"><em>IEEE ICDCS 2020</em> — Zichuan Xu, Shengnan Wang et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Robust Server Placement for Edge Computing</p>
+                        <p class="paper-venue"><em>IEEE IPDPS 2020</em> — Dongyu Lu, Yuben Qu, Fan Wu, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Packet-in Request Redirection for Minimizing Control Plane Response Time</p>
+                        <p class="paper-venue"><em>IEEE IPDPS 2020</em> — Rui Xia, Haipeng Dai, Jiaqi Zheng et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">CHASE: Charging and Scheduling Scheme for Stochastic Event Capture in Wireless Rechargeable Sensor Networks</p>
+                        <p class="paper-venue"><em>IEEE TMC 2020</em> — Haipeng Dai, Qiufang Ma et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Placement of Unmanned Aerial Vehicles for Directional Coverage in 3D Space</p>
+                        <p class="paper-venue"><em>IEEE/ACM TNET 2020</em> — Weijun Wang, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Thresholded Monitoring in Distributed Data Streams</p>
+                        <p class="paper-venue"><em>IEEE/ACM TNET 2020</em> — Meng Li, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Area Charging for Wireless Rechargeable Sensors</p>
+                        <p class="paper-venue"><em>IEEE ICCCN 2020</em> — Haipeng Dai, Xiaoyu Wang et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Scheduling of Wireless Charging Tasks with Precedence Constraints</p>
+                        <p class="paper-venue"><em>IEEE ISCC 2020</em> — Lanlan Li, Linfeng Yue, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Mining Robust Frequent Items in Data Streams</p>
+                        <p class="paper-venue"><em>IEEE JCC 2020</em> — Rui Xia, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">An Application Development Framework for Internet of Things Service Orchestration</p>
+                        <p class="paper-venue"><em>IEEE Internet of Things Journal 2020</em> — Wajid Rafique et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">RAOA: A Relay-Assisted Offloading Approach in Edge Computing Environment</p>
+                        <p class="paper-venue"><em>IEEE CSCWD 2020</em> — Song Zhang, Xutong Jiang, Jiabang Liu, Lianyong Qi, Wanchun Dou</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Multi-Request Scheduling and Collaborative Service Processing for DASH-Video Optimization in Cloud-Edge Network</p>
+                        <p class="paper-venue"><em>IEEE CLOUD 2020</em> — Xuan Zhao, Song Zhang, Wanchun Dou</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2020" data-cat="net">
+                    <div class="paper-year-badge">2020</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Internet of Things Services Orchestration Using Software-Defined Networking and Edge Computing: A Survey</p>
+                        <p class="paper-venue"><em>IEEE Communications Surveys and Tutorials 2020</em> — Wajid Rafique et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 2019 ===== -->
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Safely and Automatically Updating In-Network ACL Configurations with Intent Language</p>
+                        <p class="paper-venue"><em>ACM SIGCOMM 2019</em> — Bingchuan Tian, Xinyi Zhang, Ennan Zhai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Synthesizing Wider WiFi Bandwidth for Respiration Rate Monitoring in Dynamic Environments</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2019</em> — Shuyu Shi, Yaxiong Xie, Mo Li et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Robust Scheduling for Wireless Charger Networks</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2019</em> — Xiaoyu Wang, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">PANDA: Placement of Unmanned Aerial Vehicles Achieving 3D Directional Coverage</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2019</em> — Weijun Wang, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Charging Oriented Sensor Placement and Flexible Scheduling in Rechargeable WSN</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2019</em> — Tao Wu, Panlong Yang, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="dl">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Privacy-preserving Crowd-guided AI Decision-making in Ethical Dilemmas</p>
+                        <p class="paper-venue"><em>ACM CIKM 2019</em> — Teng Wang, Jun Zhao, Han Yu et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-dl">深度学习</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">RDMA Load Balancing via Data Partition</p>
+                        <p class="paper-venue"><em>IEEE ICCCN 2019</em> — Yi Wang, Ya-Nan Jiang, Qiufang Ma et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Error Recovery of RDMA Packets in Data Center Networks</p>
+                        <p class="paper-venue"><em>IEEE ICCCN 2019</em> — Yi Wang, Kexin Liu, Chen Tian et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Bundle Charging: Wireless Charging Energy Minimization in Dense Wireless Sensor Networks</p>
+                        <p class="paper-venue"><em>IEEE ICDCS 2019</em> — Ning Wang, Jie Wu, Haipeng Dai</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Thresholded Monitoring in Distributed Data Streams</p>
+                        <p class="paper-venue"><em>IEEE ICDCS 2019</em> — Meng Li, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Near Optimal Charging Scheduling for 3-D Wireless Rechargeable Sensor Networks with Energy Constraints</p>
+                        <p class="paper-venue"><em>IEEE ICDCS 2019</em> — Chi Lin, Chunyang Guo, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">SAFE: Service Availability via Failure Elimination through VNF Scaling</p>
+                        <p class="paper-venue"><em>ICPP 2019</em> — Rui Xia, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Orchestrating Service Chain Deployment with Plutus in Next Generation Cellular Core</p>
+                        <p class="paper-venue"><em>IEEE/ACM IWQoS 2019</em> — Jiaqi Zheng, Qiufang Ma, Chen Tian et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Speech Based Human Authentication on Smartphones</p>
+                        <p class="paper-venue"><em>IEEE SECON 2019</em> — Haipeng Dai, Wei Wang, Alex X. Liu et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">VISIT: Placement of Unmanned Aerial Vehicles for Anisotropic Monitoring Tasks</p>
+                        <p class="paper-venue"><em>IEEE SECON 2019</em> — Weijun Wang, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">When Wireless Charging Meets Fresnel Zones: Even Obstacles Can Enhance Charging Efficiency</p>
+                        <p class="paper-venue"><em>IEEE SECON 2019</em> — Chi Lin, Feng Gao, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">WiTrace: Centimeter-Level Passive Gesture Tracking Using OFDM Signals</p>
+                        <p class="paper-venue"><em>IEEE TMC 2019</em> — Lei Wang, Ke Sun, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Connectivity-constrained Placement of Wireless Chargers</p>
+                        <p class="paper-venue"><em>IEEE TMC 2019</em> — Nan Yu, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Practical Heterogeneous Wireless Charger Placement with Obstacles</p>
+                        <p class="paper-venue"><em>IEEE TMC 2019</em> — Xiaoyu Wang, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Posted Pricing for Chance Constrained Robust Crowdsensing</p>
+                        <p class="paper-venue"><em>IEEE TMC 2019</em> — Yuben Qu, Shaojie Tang, Chao Dong, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Finding Persistent Items in Distributed Datasets</p>
+                        <p class="paper-venue"><em>IEEE/ACM TNET 2019</em> — Haipeng Dai, Muhammad Shahzad et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Congestion-Minimizing Network Update in Data Centers</p>
+                        <p class="paper-venue"><em>IEEE TSC 2019</em> — Jiaqi Zheng, Hong Xu, Guihai Chen, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">A K-Anonymity Based Schema for Location Privacy Preservation</p>
+                        <p class="paper-venue"><em>IEEE TSUSC 2019</em> — Fan Fei, Shu Li, Haipeng Dai, Chunhua Hu, Wanchun Dou, Qiang Ni</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Radiation Constrained Fair Charging for Wireless Power Transfer</p>
+                        <p class="paper-venue"><em>ACM TOSN 2019</em> — Lanlan Li, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Maximizing D2D-Based Offloading Efficiency with Throughput Guarantee and Buffer Constraint</p>
+                        <p class="paper-venue"><em>IEEE TVT 2019</em> — Yuben Qu, Chao Dong, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Scheduling Dependent Coflows to Minimize the Total Weighted Job Completion Time in Datacenters</p>
+                        <p class="paper-venue"><em>Elsevier Computer Networks 2019</em> — Bingchuan Tian, Chen Tian, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">PCIAS: Precise and Contactless Measurement of Instantaneous Angular Speed using a Smartphone</p>
+                        <p class="paper-venue"><em>ACM UbiComp 2019</em> — Zeshui Li, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">SocioRank: A community and Role Detection Method in Social Networks</p>
+                        <p class="paper-venue"><em>Computers &amp; Electrical Engineering 2019</em> — Wajid Rafique, Maqbool Khan, Nadeem Sarwar, Wanchun Dou</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">An Energy-Aware Computation Offloading Method for Smart Edge Computing in Wireless Metropolitan Area Networks</p>
+                        <p class="paper-venue"><em>Journal of Network and Computer Applications 2019</em> — Xiaolong Xu, Yuancheng Li, Tao Huang, Lianyong Qi, Wanchun Dou</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Finding All You Need: Web APIs Recommendation in Web of Things Through Keywords Search</p>
+                        <p class="paper-venue"><em>IEEE Transactions on Computational Social Systems 2019</em> — Lianyong Qi, Qiang He, Feifei Chen, Wanchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">An Offloading Method Using Decentralized P2P-Enabled Mobile Edge Servers in Edge Computing</p>
+                        <p class="paper-venue"><em>Journal of Systems Architecture 2019</em> — Wenda Tang, Xuan Zhao, Wajid Rafique, Lianyong Qi, Wanchun Dou</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2019" data-cat="net">
+                    <div class="paper-year-badge">2019</div>
+                    <div class="paper-content">
+                        <p class="paper-title">IGATA: An Attraction-Based Online Task Recommendation Framework in Freemium-Crowdsourcing Platform</p>
+                        <p class="paper-venue"><em>IEEE ICPADS 2019</em> — Yuchen Xia, Shenwei Chen, Xiaofeng Gao, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 2018 ===== -->
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">VSkin: Sensing Touch Gestures on Surfaces of Mobile Devices Using Acoustic Signals</p>
+                        <p class="paper-venue"><em>ACM MobiCom 2018</em> — Ke Sun, Ting Zhao, Wei Wang, Lei Xie</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                            <a href="https://www.qhu-hdacp.cn/res/paper/mobicom2018_kesun.pdf" class="paper-link"><i class="layui-icon layui-icon-file" style="font-size:0.95em"></i> PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Unlock With Your Heart: Heartbeat-based Authentication on Commercial Mobile Phones</p>
+                        <p class="paper-venue"><em>ACM UbiComp 2018</em> — Lei Wang, Kang Huang, Ke Sun, Wei Wang, Chen Tian et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                            <a href="https://www.qhu-hdacp.cn/res/paper/Ubicomp2018_leiwang.pdf" class="paper-link"><i class="layui-icon layui-icon-file" style="font-size:0.95em"></i> PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Accurate Location Tracking From CSI-Based Passive Device-Free Probabilistic Fingerprinting</p>
+                        <p class="paper-venue"><em>IEEE Trans. Vehicular Technology 2018</em> — Shuyu Shi, Stephan Sigg, Lin Chen, Yusheng Ji</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Depth Aware Finger Tapping on Virtual Displays</p>
+                        <p class="paper-venue"><em>ACM MobiSys 2018</em> — Ke Sun, Wei Wang, Alex X. Liu, Haipeng Dai</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Robustly Safe Charging for Wireless Power Transfer</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2018</em> — Haipeng Dai, Yang Zhao, Guihai Chen et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Finding Persistent Items in Distributed Datasets</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2018</em> — Haipeng Dai, Meng Li, Alex X. Liu</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Placement of Connected Wireless Chargers</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2018</em> — Nan Yu, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Scheduling Coflows of Multi-stage Jobs to Minimize the Total Weighted Job Completion Time</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2018</em> — Bingchuan Tian, Chen Tian, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Hermes: Utility-aware Network Update in Software-defined WANs</p>
+                        <p class="paper-venue"><em>IEEE ICNP 2018</em> — Jiaqi Zheng, Qiufang Ma, Chen Tian, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">MPF: Prolonging Network Lifetime of Wireless Rechargeable Sensor Networks by Mixing Partial Charge and Full Charge</p>
+                        <p class="paper-venue"><em>IEEE SECON 2018</em> — Chi Lin, Yanhong Zhou, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">WiTrace: Centimeter-Level Passive Gesture Tracking Using WiFi Signals</p>
+                        <p class="paper-venue"><em>IEEE SECON 2018</em> — Lei Wang, Ke Sun, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">UltraGesture: Fine-Grained Gesture Sensing and Recognition</p>
+                        <p class="paper-venue"><em>IEEE SECON 2018</em> — Ling Kang, Haipeng Dai, Yuntang Liu, Alex X. Liu</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Charging Task Scheduling for Directional Wireless Charger Networks</p>
+                        <p class="paper-venue"><em>ICPP 2018</em> — Haipeng Dai, Ke Sun et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Heterogeneous Wireless Charger Placement with Obstacles</p>
+                        <p class="paper-venue"><em>ICPP 2018</em> — Xiaoyu Wang, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Cache Assisted Randomized Sharing Counters in Network Measurement</p>
+                        <p class="paper-venue"><em>ICPP 2018</em> — Qian Liu, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Identifying and Estimating Persistent Items in Data Streams</p>
+                        <p class="paper-venue"><em>IEEE/ACM TNET 2018</em> — Haipeng Dai, Muhammad Shahzad et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Wireless Charger Placement for Directional Charging</p>
+                        <p class="paper-venue"><em>IEEE/ACM TNET 2018</em> — Haipeng Dai, Xiaoyu Wang, Alex X. Liu et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">SCAPE: Safe Charging with Adjustable PowEr</p>
+                        <p class="paper-venue"><em>IEEE/ACM TNET 2018</em> — Haipeng Dai, Yunhuai Liu, Guihai Chen et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Radiation Constrained Scheduling of Wireless Charging Tasks</p>
+                        <p class="paper-venue"><em>IEEE/ACM TNET 2018</em> — Haipeng Dai, Huizhen Ma, Alex X. Liu, Guihai Chen</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Multicast in Multi-Channel Cognitive Radio Ad Hoc Networks: Challenges and Research Aspects</p>
+                        <p class="paper-venue"><em>Computer Communications 2018</em> — Yuben Qu, Chao Dong, Haipeng Dai, Song Guo</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">An Insurance Theory based Optimal Cyber-Insurance Contract Against Moral Hazard</p>
+                        <p class="paper-venue"><em>Information Sciences 2018</em> — Wanchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">High Quality Participant Recruitment of Mobile Crowdsourcing over Big Data</p>
+                        <p class="paper-venue"><em>IEEE GLOBECOM 2018</em> — Shu Li, Jie Zhang, Dongqing Xie, Shui Yu, Wanchun Dou</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2018" data-cat="net">
+                    <div class="paper-year-badge">2018</div>
+                    <div class="paper-content">
+                        <p class="paper-title">A Deadline-Aware Coflow Scheduling Approach for Big Data Applications</p>
+                        <p class="paper-venue"><em>IEEE ICC 2018</em> — Wenda Tang, Song Wang, Duanchao Li, Wanchun Dou</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 2017 ===== -->
+                <div class="paper-item" data-year="2017" data-cat="net">
+                    <div class="paper-year-badge">2017</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Finding Persistent Items in Data Streams</p>
+                        <p class="paper-venue"><em>VLDB 2017</em> — Haipeng Dai, Muhammad Shahzad, Alex X. Liu, Yuankun Zhong</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2017" data-cat="net">
+                    <div class="paper-year-badge">2017</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Optimizing Wireless Charger Placement for Directional Charging</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2017</em> — Haipeng Dai, Xiaoyu Wang, Alex X. Liu et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2017" data-cat="net">
+                    <div class="paper-year-badge">2017</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Chronus: Consistent Data Plane Updates in Timed SDNs</p>
+                        <p class="paper-venue"><em>IEEE ICDCS 2017</em> — Jiaqi Zheng, Guihai Chen, Stefan Schmid, Haipeng Dai, Jie Wu</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2017" data-cat="net">
+                    <div class="paper-year-badge">2017</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Radiation Constrained Scheduling of Wireless Charging Tasks</p>
+                        <p class="paper-venue"><em>ACM MobiHoc 2017</em> — Haipeng Dai, Huizhen Ma, Alex X. Liu</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2017" data-cat="net">
+                    <div class="paper-year-badge">2017</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Radiation Constrained Fair Wireless Charging</p>
+                        <p class="paper-venue"><em>IEEE SECON 2017</em> — Lanlan Li, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2017" data-cat="net">
+                    <div class="paper-year-badge">2017</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Safe Charging for Wireless Power Transfer</p>
+                        <p class="paper-venue"><em>IEEE/ACM TNET 2017</em> — Haipeng Dai, Yunhuai Liu, Guihai Chen et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2017" data-cat="net">
+                    <div class="paper-year-badge">2017</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Scheduling Congestion- and Loop-free Network Update in Timed SDNs</p>
+                        <p class="paper-venue"><em>IEEE JSAC 2017</em> — Jiaqi Zheng, Guihai Chen, Stefan Schmid, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2017" data-cat="net">
+                    <div class="paper-year-badge">2017</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Multicast in Multihop CRNs Under Uncertain Spectrum Availability: A Network Coding Approach</p>
+                        <p class="paper-venue"><em>IEEE/ACM TNET 2017</em> — Yuben Qu, Chao Dong, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2017" data-cat="net">
+                    <div class="paper-year-badge">2017</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Networking for Big Data: A Survey</p>
+                        <p class="paper-venue"><em>IEEE Communications Surveys &amp; Tutorials 2017</em> — Shui Yu, Meng Liu, Wanchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2017" data-cat="net">
+                    <div class="paper-year-badge">2017</div>
+                    <div class="paper-content">
+                        <p class="paper-title">LSHiForest: A Generic Framework for Fast Tree Isolation Based Ensemble Anomaly Analysis</p>
+                        <p class="paper-venue"><em>IEEE ICDE 2017</em> — Xuyun Zhang, Wanchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2017" data-cat="net">
+                    <div class="paper-year-badge">2017</div>
+                    <div class="paper-content">
+                        <p class="paper-title">A Distributed Locality-Sensitive Hashing-Based Approach for Cloud Service Recommendation from Multi-Source Data</p>
+                        <p class="paper-venue"><em>IEEE JSAC 2017</em> — Lianyong Qi, Xuyun Zhang, Wanchun Dou, Qiang Ni</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2017" data-cat="net">
+                    <div class="paper-year-badge">2017</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Mobile Live Video Streaming Optimization via Crowdsourcing Brokerage</p>
+                        <p class="paper-venue"><em>IEEE Transactions on Multimedia 2017</em> — Taotao Wu, Wanchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 2016 ===== -->
+                <div class="paper-item" data-year="2016" data-cat="net">
+                    <div class="paper-year-badge">2016</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Noisy Bloom Filters for Multi-Set Membership Testing</p>
+                        <p class="paper-venue"><em>ACM SIGMETRICS 2016</em> — Haipeng Dai, Yuankun Zhong, Alex X. Liu et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2016" data-cat="net">
+                    <div class="paper-year-badge">2016</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Omnidirectional Chargability with Directional Antennas</p>
+                        <p class="paper-venue"><em>IEEE ICNP 2016</em> — Haipeng Dai, Xiaoyu Wang, Alex X. Liu et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2016" data-cat="net">
+                    <div class="paper-year-badge">2016</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Radiation Constrained Wireless Charger Placement</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2016</em> — Haipeng Dai, Yunhuai Liu, Alex X. Liu et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2016" data-cat="net">
+                    <div class="paper-year-badge">2016</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Scalable Local-Recoding Anonymization Using Locality Sensitive Hashing for Big Data Privacy Preservation</p>
+                        <p class="paper-venue"><em>ACM CIKM 2016</em> — Xuyun Zhang, Christopher Leckie, Wanchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2016" data-cat="net">
+                    <div class="paper-year-badge">2016</div>
+                    <div class="paper-content">
+                        <p class="paper-title">EnReal: An Energy-Aware Resource Allocation Method for Scientific Workflow Executions in Cloud Environment</p>
+                        <p class="paper-venue"><em>IEEE Transactions on Cloud Computing 2016</em> — Xiaolong Xu, Wanchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2016" data-cat="net">
+                    <div class="paper-year-badge">2016</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Towards energy-fairness for broadcast scheduling with minimum delay in low-duty-cycle sensor networks</p>
+                        <p class="paper-venue"><em>Computer Communications 2016</em> — Lijie Xu, Xiaojun Zhu, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2016" data-cat="net">
+                    <div class="paper-year-badge">2016</div>
+                    <div class="paper-content">
+                        <p class="paper-title">A Context-aware Service Evaluation Approach over Big Data for Cloud Applications</p>
+                        <p class="paper-venue"><em>IEEE Transactions on Cloud Computing 2016</em> — Lianyong Qi, Wanchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2016" data-cat="net">
+                    <div class="paper-year-badge">2016</div>
+                    <div class="paper-content">
+                        <p class="paper-title">An Adaptive Cloudlet Placement Method for Mobile Applications over GPS Big Data</p>
+                        <p class="paper-venue"><em>IEEE GLOBECOM 2016</em> — Haolong Xiang, Xiaolong Xu, Wanchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2016" data-cat="net">
+                    <div class="paper-year-badge">2016</div>
+                    <div class="paper-content">
+                        <p class="paper-title">A Task Scheduling Method for Energy-Performance Trade-Off in Clouds</p>
+                        <p class="paper-venue"><em>IEEE HPCC 2016</em> — Jun Yang, Xiaolong Xu, Wenchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2016" data-cat="net">
+                    <div class="paper-year-badge">2016</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Real-Time Trajectory Monitoring to Improve Taxi Service Using GPS Big Data</p>
+                        <p class="paper-venue"><em>Information and Management 2016</em> — Zuojian Zhou, Wanchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2016" data-cat="net">
+                    <div class="paper-year-badge">2016</div>
+                    <div class="paper-content">
+                        <p class="paper-title">A Two-Stage Locality-Sensitive Hashing Based Approach for Privacy-Preserving Mobile Service Recommendation</p>
+                        <p class="paper-venue"><em>Future Generation Computer Systems 2016</em> — Lianyong Qi, Xuyun Zhang, Wanchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 2015 ===== -->
+                <div class="paper-item" data-year="2015" data-cat="net">
+                    <div class="paper-year-badge">2015</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Minimizing Transient Congestion during Network Update in Data Centers</p>
+                        <p class="paper-venue"><em>IEEE ICNP 2015</em> — Jiaqi Zheng, Hong Xu, Guihai Chen, Haipeng Dai</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2015" data-cat="net">
+                    <div class="paper-year-badge">2015</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Network Coding-Based Multicast in Multi-Hop CRNs under Uncertain Spectrum Availability</p>
+                        <p class="paper-venue"><em>IEEE INFOCOM 2015</em> — Yuben Qu, Chao Dong, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF A</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2015" data-cat="net">
+                    <div class="paper-year-badge">2015</div>
+                    <div class="paper-content">
+                        <p class="paper-title">On Maximizing Reliability of Lifetime Constrained Data Aggregation Tree in Wireless Sensor Networks</p>
+                        <p class="paper-venue"><em>ICPP 2015</em> — Mengfan Shan, Guihai Chen, Fan Wu, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                            <span class="paper-tag tag-rank">CCF B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2015" data-cat="net">
+                    <div class="paper-year-badge">2015</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Practical Scheduling for Stochastic Event Capture in Energy Harvesting Sensor Networks</p>
+                        <p class="paper-venue"><em>International Journal of Sensor Networks 2015</em> — Haipeng Dai, Xiaobing Wu et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2015" data-cat="net">
+                    <div class="paper-year-badge">2015</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Simultaneous Query for Wireless Sensor Networks: A Power Based Solution</p>
+                        <p class="paper-venue"><em>IEEE TMC 2015</em> — Dingming Wu, Guihai Chen, Chao Dong, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2015" data-cat="net">
+                    <div class="paper-year-badge">2015</div>
+                    <div class="paper-content">
+                        <p class="paper-title">Optimizing Energy Efficiency for Minimum Latency Broadcast in Low-Duty-Cycle Sensor Networks</p>
+                        <p class="paper-venue"><em>ACM TOSN 2015</em> — Lijie Xu, Guihai Chen, Jiannong Cao, Haipeng Dai et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2015" data-cat="net">
+                    <div class="paper-year-badge">2015</div>
+                    <div class="paper-content">
+                        <p class="paper-title">HireSome-II: Towards Privacy-Aware Cross-Cloud Service Composition for Big Data Applications</p>
+                        <p class="paper-venue"><em>IEEE TPDS 2015</em> — Wanchun Dou, Xuyun Zhang et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2015" data-cat="net">
+                    <div class="paper-year-badge">2015</div>
+                    <div class="paper-content">
+                        <p class="paper-title">A Cloud-Based Framework for Home-Diagnosis Service over Big Medical Data</p>
+                        <p class="paper-venue"><em>Journal of Systems and Software 2015</em> — Wenmin Lin, Wanchun Dou et al.</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="paper-item" data-year="2015" data-cat="net">
+                    <div class="paper-year-badge">2015</div>
+                    <div class="paper-content">
+                        <p class="paper-title">vGraph: Graph Virtualization Towards Big Data</p>
+                        <p class="paper-venue"><em>IEEE CBD 2015</em> — Maqbool Khan, Meng Liu, Wanchun Dou, Shui Yu</p>
+                        <div class="paper-meta">
+                            <span class="paper-tag tag-net">网络系统</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- end paperList -->
+
+            <div class="no-result" id="noResult">暂无符合条件的论文</div>
+        </div>
+
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="../media/logo.png" alt="Logo" onerror="this.src='https://www.qhu.edu.cn/images/logo.png'">
+                </div>
+                <div class="footer-info">
+                    <p>© 2026 青海大学高性能与云计算研究所 版权所有</p>
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="#">隐私政策</a>
+                <a href="#">网站地图</a>
+                <a href="./contact.html">联系我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/plugin/layui/layui.js"></script>
+    <script>
+        layui.use(['element'], function () {
+            var navToggle = document.querySelector('.nav-toggle');
+            var navMenu   = document.getElementById('siteNav');
+            if (navToggle && navMenu) {
+                var setNavState = function (isOpen) {
+                    var icon = navToggle.querySelector('.layui-icon');
+                    navMenu.classList.toggle('is-open', isOpen);
+                    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    if (icon) icon.className = 'layui-icon ' + (isOpen ? 'layui-icon-close' : 'layui-icon-spread-left');
+                };
+                navToggle.addEventListener('click', function () { setNavState(!navMenu.classList.contains('is-open')); });
+                navMenu.querySelectorAll('a').forEach(function (link) {
+                    link.addEventListener('click', function () { if (window.innerWidth <= 768) setNavState(false); });
+                });
+                window.addEventListener('resize', function () { if (window.innerWidth > 768) setNavState(false); });
+            }
+        });
+
+        var activeYear = 'all';
+        var activeCat  = 'all';
+
+        function applyFilters() {
+            var items   = document.querySelectorAll('.paper-item');
+            var visible = 0;
+            items.forEach(function (item) {
+                var yearOk = activeYear === 'all' || item.dataset.year === activeYear;
+                var catOk  = activeCat  === 'all' || item.dataset.cat  === activeCat;
+                var show   = yearOk && catOk;
+                item.style.display = show ? '' : 'none';
+                if (show) visible++;
+            });
+            document.getElementById('noResult').style.display = visible === 0 ? 'block' : 'none';
+        }
+
+        document.querySelectorAll('.year-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.year-btn').forEach(function (b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                activeYear = this.dataset.year;
+                applyFilters();
+            });
+        });
+
+        document.querySelectorAll('.cat-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.cat-btn').forEach(function (b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                activeCat = this.dataset.cat;
+                applyFilters();
+            });
+        });
+    </script>
+</body>
+</html>
