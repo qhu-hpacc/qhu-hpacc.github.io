@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>研究所教师 - 青海大学高性能与云计算研究所</title>
+    <link rel="stylesheet" href="../static/plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <style>
+        .tp-page {
+            padding-top: 1.5em;
+            padding-bottom: 4.5em;
+        }
+
+        .tp-hero {
+            position: relative;
+            overflow: hidden;
+            min-height: 15.5em;
+            padding: 3.4em 3.8em;
+            border-radius: 8px;
+            background:
+                linear-gradient(135deg, rgba(13, 59, 133, 0.97), rgba(26, 86, 184, 0.86)),
+                #0d3b85;
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        .tp-hero::after {
+            content: "";
+            position: absolute;
+            right: -2em;
+            bottom: -3.5em;
+            width: min(46vw, 34em);
+            aspect-ratio: 16 / 9;
+            background: url("../static/img/satellite-remote-sensing-center-blue-particles.png") center / contain no-repeat;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+
+        .tp-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 47em;
+        }
+
+        .tp-kicker {
+            margin-bottom: 0.9em;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 0.857em;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .tp-hero h1 {
+            margin: 0 0 0.45em;
+            font-size: 2.65em;
+            line-height: 1.18;
+            font-weight: 700;
+        }
+
+        .tp-hero p {
+            margin: 0;
+            max-width: 42em;
+            color: rgba(255, 255, 255, 0.84);
+            font-size: 1.071em;
+            line-height: 1.9;
+        }
+
+        .tp-layout {
+            margin-top: 2em;
+        }
+
+        .tp-main {
+            min-width: 0;
+        }
+
+        .tp-overview {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1em;
+            margin-bottom: 2.2em;
+        }
+
+        .tp-stat {
+            padding: 1.25em 1.35em;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .tp-stat strong {
+            display: block;
+            color: var(--primary-color);
+            font-size: 1.75em;
+            line-height: 1;
+        }
+
+        .tp-stat span {
+            display: block;
+            margin-top: 0.55em;
+            color: var(--text-light);
+            font-size: 0.929em;
+        }
+
+        .tp-section {
+            padding: 0 0 2.8em;
+        }
+
+        .tp-section + .tp-section {
+            padding-top: 2.4em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .tp-section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 1em;
+            margin-bottom: 1.25em;
+        }
+
+        .tp-section-title {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 1.65em;
+            line-height: 1.22;
+        }
+
+        .tp-section-note {
+            margin: 0.35em 0 0;
+            color: #8a97a8;
+            font-size: 0.929em;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .tp-section-count {
+            flex: 0 0 auto;
+            padding: 0.35em 0.75em;
+            border-radius: 999px;
+            background: rgba(26, 86, 184, 0.08);
+            color: var(--secondary-color);
+            font-size: 0.857em;
+            font-weight: 700;
+        }
+
+        .tp-faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.15em;
+        }
+
+        .tp-card {
+            display: grid;
+            grid-template-columns: 8.8em minmax(0, 1fr);
+            gap: 1.2em;
+            min-height: 13em;
+            padding: 1em;
+            border: 1px solid rgba(13, 59, 133, 0.1);
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 0.75em 2em rgba(7, 31, 71, 0.045);
+            transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .tp-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(26, 86, 184, 0.34);
+            box-shadow: 0 1em 2.6em rgba(7, 31, 71, 0.08);
+        }
+
+        .aos-ready .tp-card.aos-in:hover {
+            transform: translate3d(0, -3px, 0);
+        }
+
+        .tp-photo {
+            position: relative;
+            overflow: hidden;
+            border-radius: 6px;
+            background: #e7edf5;
+            aspect-ratio: 4 / 5;
+        }
+
+        .tp-photo img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .tp-card-body {
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+        }
+
+        .tp-card-top {
+            margin-bottom: 0.75em;
+            padding-bottom: 0.7em;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .tp-card h3 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 1.28em;
+            line-height: 1.35;
+        }
+
+        .tp-role {
+            margin: 0.35em 0 0;
+            color: var(--secondary-color);
+            font-size: 0.929em;
+            font-weight: 700;
+        }
+
+        .tp-info {
+            display: grid;
+            gap: 0.55em;
+            margin: 0;
+            color: var(--text-light);
+            font-size: 0.929em;
+            line-height: 1.65;
+        }
+
+        .tp-info div {
+            display: grid;
+            grid-template-columns: 4.6em minmax(0, 1fr);
+            gap: 0.35em;
+        }
+
+        .tp-info dt {
+            color: #8a97a8;
+            font-weight: 700;
+        }
+
+        .tp-info dd {
+            min-width: 0;
+            margin: 0;
+        }
+
+        .tp-card-action {
+            margin-top: auto;
+            padding-top: 1em;
+        }
+
+        .tp-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35em;
+            color: var(--secondary-color);
+            font-size: 0.929em;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .tp-more:hover {
+            color: var(--primary-color);
+        }
+
+        .tp-support-list {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1em;
+        }
+
+        .tp-support-item {
+            padding: 1.1em 1.15em;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.88);
+        }
+
+        .tp-support-item h3 {
+            margin: 0 0 0.5em;
+            color: var(--primary-color);
+            font-size: 1.08em;
+        }
+
+        .tp-support-item p {
+            margin: 0;
+            color: var(--text-light);
+            line-height: 1.75;
+            font-size: 0.929em;
+        }
+
+        .aos-ready [data-aos] {
+            opacity: 0;
+            transition:
+                opacity 0.78s cubic-bezier(.23, 1.01, .32, 1),
+                transform 0.78s cubic-bezier(.23, 1.01, .32, 1);
+            transition-delay: var(--aos-delay, 0ms);
+            will-change: transform, opacity;
+        }
+
+        .aos-ready [data-aos="fade-up"] {
+            transform: translate3d(0, 56px, 0);
+        }
+
+        .aos-ready [data-aos].aos-in {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .aos-ready [data-aos] {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        @media screen and (max-width: 900px) {
+            .tp-hero {
+                padding: 2.5em 2em;
+            }
+
+            .tp-overview,
+            .tp-support-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .tp-faculty-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media screen and (max-width: 620px) {
+            .tp-page {
+                padding-top: 0.6em;
+            }
+
+            .tp-hero {
+                padding: 2em 1.2em;
+            }
+
+            .tp-hero h1 {
+                font-size: 2em;
+            }
+
+            .tp-hero::after {
+                opacity: 0.12;
+                width: 28em;
+            }
+
+            .tp-section-head {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .tp-card {
+                grid-template-columns: 6.8em minmax(0, 1fr);
+                gap: 0.9em;
+                padding: 0.85em;
+            }
+
+            .tp-info div {
+                grid-template-columns: 1fr;
+                gap: 0.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="../media/logo.png" alt="青海大学Logo" onerror="this.src='https://www.qhu.edu.cn/images/logo.png'">
+                <div class="logo-text">
+                    <h1>高性能与云计算研究所</h1>
+                    <p>Institute of High Performance and Cloud Computing</p>
+                </div>
+            </div>
+            <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="siteNav">
+                <i class="layui-icon layui-icon-spread-left"></i>
+                <span>导航</span>
+            </button>
+            <nav class="nav-menu" id="siteNav">
+                <a href="../index.html">首页</a>
+                <a href="./research-introduction.html">研究所简介</a>
+                <a href="./teachers.html" class="active">研究所教师</a>
+                <a href="./news.html">新闻动态</a>
+                <a href="./projects.html">科研项目</a>
+                <a href="#">论文发表</a>
+                <a href="#">科研成果</a>
+                <a href="#">联系我们</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-container tp-page">
+        <section class="tp-hero">
+            <div class="tp-hero-content">
+                <div class="tp-kicker">Faculty Team</div>
+                <h1>研究所教师</h1>
+                <p>围绕高性能计算、云计算、大数据处理与人工智能等方向，建设结构清晰、协同创新的科研队伍，支撑人才培养、平台建设与前沿技术攻关。</p>
+            </div>
+        </section>
+
+        <div class="tp-layout">
+            <div class="tp-main">
+                <section class="tp-section" id="faculty">
+                    <div class="tp-section-head">
+                        <div>
+                            <h2 class="tp-section-title">专任教师</h2>
+                            <p class="tp-section-note">Full-time Faculty</p>
+                        </div>
+                    </div>
+
+                    <div class="tp-faculty-grid">
+                        <article class="tp-card" data-aos="fade-up">
+                            <div class="tp-photo">
+                                <img src="../static/img/people/3978d0a57035a8a8139aa1a4ee1a1566.jpg" alt="教师照片">
+                            </div>
+                            <div class="tp-card-body">
+                                <div class="tp-card-top">
+                                    <h3>教师姓名待补充</h3>
+                                    <p class="tp-role">职称待补充</p>
+                                </div>
+                                <dl class="tp-info">
+                                    <div>
+                                        <dt>研究方向</dt>
+                                        <dd>高性能计算、并行算法、科学计算平台</dd>
+                                    </div>
+                                    <div>
+                                        <dt>电子邮箱</dt>
+                                        <dd>待补充</dd>
+                                    </div>
+                                </dl>
+                                <div class="tp-card-action">
+                                    <a class="tp-more" href="#" aria-label="查看教师详情">MORE <i class="layui-icon layui-icon-right"></i></a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="tp-card" data-aos="fade-up">
+                            <div class="tp-photo">
+                                <img src="../static/img/people/4745ccfc56a8b046f91b02231cee67d1.jpg" alt="教师照片">
+                            </div>
+                            <div class="tp-card-body">
+                                <div class="tp-card-top">
+                                    <h3>教师姓名待补充</h3>
+                                    <p class="tp-role">职称待补充</p>
+                                </div>
+                                <dl class="tp-info">
+                                    <div>
+                                        <dt>研究方向</dt>
+                                        <dd>云计算、分布式系统、资源调度优化</dd>
+                                    </div>
+                                    <div>
+                                        <dt>电子邮箱</dt>
+                                        <dd>待补充</dd>
+                                    </div>
+                                </dl>
+                                <div class="tp-card-action">
+                                    <a class="tp-more" href="#" aria-label="查看教师详情">MORE <i class="layui-icon layui-icon-right"></i></a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="tp-card" data-aos="fade-up">
+                            <div class="tp-photo">
+                                <img src="../static/img/people/e4f2f5611c020cfe274a9fa3a383f8cb.jpg" alt="教师照片">
+                            </div>
+                            <div class="tp-card-body">
+                                <div class="tp-card-top">
+                                    <h3>教师姓名待补充</h3>
+                                    <p class="tp-role">职称待补充</p>
+                                </div>
+                                <dl class="tp-info">
+                                    <div>
+                                        <dt>研究方向</dt>
+                                        <dd>大数据处理、图计算、智能数据分析</dd>
+                                    </div>
+                                    <div>
+                                        <dt>电子邮箱</dt>
+                                        <dd>待补充</dd>
+                                    </div>
+                                </dl>
+                                <div class="tp-card-action">
+                                    <a class="tp-more" href="#" aria-label="查看教师详情">MORE <i class="layui-icon layui-icon-right"></i></a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="tp-card" data-aos="fade-up">
+                            <div class="tp-photo">
+                                <img src="../static/img/people/cbdd5e3fcd3653b99b34f41944d0877e.jpg" alt="教师照片">
+                            </div>
+                            <div class="tp-card-body">
+                                <div class="tp-card-top">
+                                    <h3>教师姓名待补充</h3>
+                                    <p class="tp-role">职称待补充</p>
+                                </div>
+                                <dl class="tp-info">
+                                    <div>
+                                        <dt>研究方向</dt>
+                                        <dd>深度学习、智能计算、模型训练加速</dd>
+                                    </div>
+                                    <div>
+                                        <dt>电子邮箱</dt>
+                                        <dd>待补充</dd>
+                                    </div>
+                                </dl>
+                                <div class="tp-card-action">
+                                    <a class="tp-more" href="#" aria-label="查看教师详情">MORE <i class="layui-icon layui-icon-right"></i></a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="tp-card" data-aos="fade-up">
+                            <div class="tp-photo">
+                                <img src="../static/img/people/a82864080ed57663138d2f940d110167.jpg" alt="教师照片">
+                            </div>
+                            <div class="tp-card-body">
+                                <div class="tp-card-top">
+                                    <h3>教师姓名待补充</h3>
+                                    <p class="tp-role">职称待补充</p>
+                                </div>
+                                <dl class="tp-info">
+                                    <div>
+                                        <dt>研究方向</dt>
+                                        <dd>绿色计算、低碳数据中心、能效评估</dd>
+                                    </div>
+                                    <div>
+                                        <dt>电子邮箱</dt>
+                                        <dd>待补充</dd>
+                                    </div>
+                                </dl>
+                                <div class="tp-card-action">
+                                    <a class="tp-more" href="#" aria-label="查看教师详情">MORE <i class="layui-icon layui-icon-right"></i></a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="tp-section" id="support">
+                    <div class="tp-section-head">
+                        <div>
+                            <h2 class="tp-section-title">团队支撑</h2>
+                            <p class="tp-section-note">Team Support</p>
+                        </div>
+                    </div>
+                    <div class="tp-support-list">
+                        <div class="tp-support-item">
+                            <h3>人才培养</h3>
+                            <p>依托研究平台开展本科生、研究生科研训练和创新实践。</p>
+                        </div>
+                        <div class="tp-support-item">
+                            <h3>平台建设</h3>
+                            <p>建设高性能计算、云计算与智能数据处理实验平台。</p>
+                        </div>
+                        <div class="tp-support-item">
+                            <h3>开放合作</h3>
+                            <p>面向区域产业与科研需求，推动校内外协同创新与成果转化。</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="../media/logo.png" alt="Logo" onerror="this.src='https://www.qhu.edu.cn/images/logo.png'">
+                </div>
+                <div class="footer-info">
+                    <p>© 2026 青海大学高性能与云计算研究所 版权所有</p>
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="#">隐私政策</a>
+                <a href="#">网站地图</a>
+                <a href="#">联系我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../static/plugin/layui/layui.js"></script>
+    <script>
+        (function () {
+            var items = Array.prototype.slice.call(document.querySelectorAll('[data-aos]'));
+
+            if (!items.length) {
+                return;
+            }
+
+            items.forEach(function (el, index) {
+                el.style.setProperty('--aos-delay', (index % 2) * 90 + 'ms');
+            });
+
+            if (!('IntersectionObserver' in window)) {
+                items.forEach(function (el) {
+                    el.classList.add('aos-in');
+                });
+                return;
+            }
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.16) {
+                        entry.target.classList.add('aos-in');
+                    } else {
+                        entry.target.classList.remove('aos-in');
+                    }
+                });
+            }, {
+                threshold: [0, 0.08, 0.16, 0.28],
+                rootMargin: '0px 0px -4% 0px'
+            });
+
+            document.documentElement.classList.add('aos-ready');
+            items.forEach(function (el) {
+                observer.observe(el);
+            });
+        })();
+
+        layui.use(['element'], function(){
+            var navToggle = document.querySelector('.nav-toggle');
+            var navMenu = document.getElementById('siteNav');
+
+            if (navToggle && navMenu) {
+                var setNavState = function(isOpen) {
+                    var icon = navToggle.querySelector('.layui-icon');
+
+                    navMenu.classList.toggle('is-open', isOpen);
+                    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+                    if (icon) {
+                        icon.className = 'layui-icon ' + (isOpen ? 'layui-icon-close' : 'layui-icon-spread-left');
+                    }
+                };
+
+                navToggle.addEventListener('click', function() {
+                    setNavState(!navMenu.classList.contains('is-open'));
+                });
+
+                navMenu.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth <= 768) {
+                            setNavState(false);
+                        }
+                    });
+                });
+
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768) {
+                        setNavState(false);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

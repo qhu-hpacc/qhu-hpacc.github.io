@@ -7,206 +7,475 @@
     <link rel="stylesheet" href="../static/plugin/layui/css/layui.css">
     <link rel="stylesheet" href="../static/css/style.css">
     <style>
-        .intro-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5em;
+        /* ===== Page ===== */
+        .rp-page {
+            padding-top: 1.5em;
+            padding-bottom: 5em;
         }
-        .page-intro {
-            display: grid;
-            grid-template-columns: 16em minmax(0, 1fr);
-            gap: 1.4em;
-            align-items: stretch;
+        /* ===== Hero ===== */
+        .rp-hero {
+            padding: 4.5em 0 3.5em;
         }
-        .page-side-nav {
-            background: rgba(255,255,255,0.76);
-            border: 1px solid rgba(13, 59, 133, 0.08);
-            border-radius: 0.9em;
-            padding: 1.4em 1.2em;
-            box-shadow: 0 0.6em 2em rgba(7, 31, 71, 0.05);
-            backdrop-filter: blur(0.6em);
+        .rp-hero-inner {
+            max-width: 760px;
+            margin: 0 auto;
+            text-align: center;
         }
-        .page-side-nav h3 {
-            margin: 0 0 0.85em;
-            color: var(--primary-color);
-            font-size: 1.214em;
-        }
-        .page-side-nav a {
-            display: block;
-            padding: 0.8em 0.95em;
-            margin-top: 0.45em;
-            border-radius: 0.6em;
-            color: var(--text-color);
-            text-decoration: none;
-            background: transparent;
-            transition: 0.25s ease;
-        }
-        .page-side-nav a:hover {
-            background: rgba(13, 59, 133, 0.08);
-            color: var(--primary-color);
-        }
-        .page-summary {
-            padding: 2em 2.2em;
-            border-radius: 0.95em;
-            background: linear-gradient(135deg, rgba(255,255,255,0.94), rgba(255,255,255,0.82));
-            border: 1px solid rgba(13, 59, 133, 0.08);
-            box-shadow: 0 0.8em 2.4em rgba(7, 31, 71, 0.06);
-        }
-        .page-summary .section-title {
-            font-size: 2em;
-            margin-bottom: 0.3em;
-        }
-        .page-summary .section-subtitle {
-            margin-bottom: 1.2em;
-        }
-        .page-summary p,
-        .direction-detail p,
-        .direction-points li {
-            font-size: 1em;
-            line-height: 1.95;
-            color: var(--text-light);
-        }
-        .page-summary p + p,
-        .direction-detail p + p {
-            margin-top: 0.9em;
-        }
-        .summary-meta {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 0.9em;
-            margin-top: 1.5em;
-        }
-        .summary-meta-item {
-            padding: 1em 1.05em;
-            border-radius: 0.75em;
-            background: linear-gradient(180deg, rgba(13, 59, 133, 0.08), rgba(13, 59, 133, 0.03));
-            border: 1px solid rgba(13, 59, 133, 0.08);
-        }
-        .summary-meta-item h4 {
-            margin: 0 0 0.5em;
-            font-size: 1.071em;
-            color: var(--primary-color);
-        }
-        .summary-meta-item p {
-            margin: 0;
-            font-size: 0.929em;
-            line-height: 1.75;
-            color: var(--text-light);
-        }
-        .direction-section {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25em;
-        }
-        .direction-row {
-            display: grid;
-            grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
-            gap: 1.35em;
-            align-items: stretch;
-        }
-        .direction-row:nth-child(even) {
-            grid-template-columns: minmax(0, 1.16fr) minmax(0, 0.84fr);
-        }
-        .direction-row:nth-child(even) .direction-label {
-            order: 2;
-        }
-        .direction-row:nth-child(even) .direction-detail {
-            order: 1;
-        }
-        .direction-label,
-        .direction-detail {
-            border-radius: 0.95em;
-            box-sizing: border-box;
-        }
-        .direction-label {
-            padding: 1.7em 1.6em;
-            background: linear-gradient(145deg, rgba(13, 59, 133, 0.94), rgba(34, 104, 194, 0.78));
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 100%;
-            box-shadow: 0 0.9em 2.4em rgba(13, 59, 133, 0.18);
-        }
-        .direction-index {
+        .rp-hero-tag {
+            display: inline-block;
+            padding: 0.3em 1em;
+            background: rgba(13, 59, 133, 0.09);
+            color: var(--secondary-color);
             font-size: 0.857em;
-            letter-spacing: 0.18em;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.72);
+            font-weight: bold;
+            border-radius: 2em;
+            margin-bottom: 1em;
         }
-        .direction-label h3 {
-            margin: 0.55em 0 0.45em;
-            font-size: 1.786em;
-            line-height: 1.2;
-        }
-        .direction-label p {
-            margin: 0;
-            font-size: 0.929em;
-            line-height: 1.9;
-            color: rgba(255,255,255,0.86);
-        }
-        .direction-detail {
-            padding: 1.7em 1.8em;
-            background: rgba(255,255,255,0.92);
-            border: 1px solid rgba(13, 59, 133, 0.08);
-            box-shadow: 0 0.8em 2.2em rgba(7, 31, 71, 0.06);
-        }
-        .direction-detail h4 {
-            margin: 0 0 0.85em;
-            font-size: 1.143em;
+        .rp-hero-text h1 {
+            margin: 0 0 0.6em;
+            font-size: 2.5em;
+            line-height: 1.18;
             color: var(--primary-color);
         }
-        .direction-points {
-            margin: 1em 0 0;
-            padding-left: 1.2em;
+        .rp-hero-text p {
+            margin: 0;
+            color: var(--text-light);
+            font-size: 1.07em;
+            line-height: 2;
         }
-        .direction-points li + li {
-            margin-top: 0.5em;
+        .rp-hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2.8em;
+            margin-top: 2.2em;
+            padding-top: 1.6em;
+            border-top: 1px solid var(--border-color);
         }
-        .closing-panel {
+        .rp-hero-meta-item strong {
+            display: block;
+            font-size: 1.6em;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+        .rp-hero-meta-item span {
+            display: block;
+            margin-top: 0.4em;
+            font-size: 0.857em;
+            color: #8a97a8;
+        }
+        .rp-hero-visual {
+            border-radius: 1.1em;
+            overflow: hidden;
+        }
+        .rp-hero-visual img {
+            display: block;
+            width: 100%;
+        }
+        /* ===== Divider ===== */
+        .rp-divider {
+            border: 0;
+            height: 1px;
+            background: var(--border-color);
+            margin: 0;
+        }
+        /* ===== Direction sections ===== */
+        .rp-section {
+            padding: 6em 0;
+        }
+        .rp-section-inner {
             display: grid;
             grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 5.5em;
+            align-items: center;
+        }
+        /* Reversed layout */
+        .rp-section--alt .rp-section-text { order: 2; }
+        .rp-section--alt .rp-section-visual { order: 1; }
+        /* Accent line before text */
+        .rp-section-text::before {
+            content: '';
+            display: block;
+            width: 2.8em;
+            height: 3px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+            margin-bottom: 1.1em;
+        }
+        .rp-section-no {
+            font-size: 0.8em;
+            letter-spacing: 0.22em;
+            color: #bbc4d0;
+            text-transform: uppercase;
+            margin-bottom: 0.65em;
+        }
+        .rp-section-no strong {
+            color: var(--secondary-color);
+        }
+        .rp-section-text h2 {
+            margin: 0 0 0.55em;
+            font-size: 2.1em;
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+        .rp-section-lead {
+            font-size: 1.07em;
+            color: var(--text-color);
+            line-height: 1.85;
+            margin: 0 0 1em;
+            font-weight: 500;
+        }
+        .rp-section-body p {
+            color: var(--text-light);
+            font-size: 0.964em;
+            line-height: 1.97;
+            margin: 0;
+        }
+        .rp-section-body p + p {
+            margin-top: 0.9em;
+        }
+        .rp-section-visual {
+            border-radius: 1em;
+            overflow: hidden;
+        }
+        .rp-section-visual img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        /* ===== Animate on scroll ===== */
+        .aos-ready [data-aos] {
+            opacity: 0;
+            transition:
+                opacity 1.15s cubic-bezier(.23,1.01,.32,1),
+                transform 1.15s cubic-bezier(.23,1.01,.32,1);
+            will-change: transform, opacity;
+        }
+        .aos-ready [data-aos="fade-right"] { transform: translate3d(-120px, 0, 0); }
+        .aos-ready [data-aos="fade-left"]  { transform: translate3d(120px, 0, 0); }
+        .aos-ready [data-aos="fade-up"]    { transform: translate3d(0, 60px, 0); }
+        .aos-ready [data-aos].aos-in {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .aos-ready [data-aos] {
+                transform: none;
+                transition: none;
+            }
+            .aos-ready [data-aos].aos-in {
+                opacity: 1;
+            }
+        }
+        /* ===== Responsive ===== */
+        @media screen and (max-width: 960px) {
+            .rp-hero-inner,
+            .rp-section-inner {
+                grid-template-columns: 1fr;
+                gap: 2.2em;
+            }
+            .rp-hero-visual { display: none; }
+            .rp-section--alt .rp-section-text,
+            .rp-section--alt .rp-section-visual { order: unset; }
+            .rp-section-visual img { height: auto; }
+            .rp-section { padding: 3.5em 0; }
+        }
+        @media screen and (max-width: 576px) {
+            .rp-section { padding: 2.5em 0; }
+            .rp-section-text h2 { font-size: 1.65em; }
+            .rp-hero-text h1 { font-size: 1.95em; }
+            .rp-section-inner { gap: 1.6em; }
+        }
+        /* ===== (legacy classes below no longer used — keep for safety) ===== */
+        .college-sidebar {
+            position: sticky;
+            top: 1.4em;
+            background: rgba(255,255,255,0.94);
+            border: 1px solid rgba(13, 59, 133, 0.08);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0.8em 2.2em rgba(7, 31, 71, 0.06);
+        }
+        .sidebar-title {
+            padding: 1.35em 1.3em;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+        }
+        .sidebar-title h2 {
+            margin: 0;
+            font-size: 1.286em;
+            line-height: 1.25;
+        }
+        .sidebar-title p {
+            margin: 0.45em 0 0;
+            color: rgba(255,255,255,0.72);
+            font-size: 0.857em;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .college-sidebar nav {
+            padding: 0.55em 0;
+        }
+        .college-sidebar a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1em;
+            padding: 0.95em 1.25em;
+            color: var(--text-color);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            transition: 0.22s ease;
+        }
+        .college-sidebar a span {
+            color: #9aa6b2;
+            font-size: 0.857em;
+        }
+        .college-sidebar a:hover,
+        .college-sidebar a.active {
+            color: var(--primary-color);
+            background: rgba(13, 59, 133, 0.07);
+            border-left-color: var(--primary-color);
+        }
+        .college-content {
+            display: flex;
+            flex-direction: column;
             gap: 1.25em;
+            min-width: 0;
         }
-        .closing-panel .section-box {
-            margin-bottom: 0;
+        .intro-hero,
+        .content-section {
+            background: rgba(255,255,255,0.94);
+            border: 1px solid rgba(13, 59, 133, 0.08);
+            border-radius: 8px;
+            box-shadow: 0 0.8em 2.2em rgba(7, 31, 71, 0.06);
+            overflow: hidden;
         }
-        .closing-panel ul {
+        .intro-hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(19em, 0.95fr);
+            align-items: stretch;
+        }
+        .intro-copy {
+            padding: 2.6em 2.7em;
+        }
+        .breadcrumb-line {
+            margin-bottom: 1.3em;
+            color: #8a97a8;
+            font-size: 0.929em;
+        }
+        .hero-kicker,
+        .section-kicker {
+            color: var(--secondary-color);
+            font-size: 0.857em;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .intro-copy h2 {
+            margin: 0.35em 0 0.5em;
+            color: var(--primary-color);
+            font-size: 2.286em;
+            line-height: 1.18;
+            letter-spacing: 0;
+        }
+        .hero-lead {
+            margin: 0;
+            color: var(--text-light);
+            font-size: 1.071em;
+            line-height: 2;
+        }
+        .hero-meta {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1em;
+            margin-top: 1.8em;
+        }
+        .hero-meta div {
+            padding-top: 0.85em;
+            border-top: 2px solid rgba(13, 59, 133, 0.16);
+        }
+        .hero-meta strong {
+            display: block;
+            color: var(--primary-color);
+            font-size: 1.286em;
+            line-height: 1;
+        }
+        .hero-meta span {
+            display: block;
+            margin-top: 0.45em;
+            color: #8a97a8;
+            font-size: 0.857em;
+        }
+        .intro-visual {
+            margin: 0;
+            min-height: 24em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.7em;
+            background: linear-gradient(145deg, rgba(13, 59, 133, 0.09), rgba(255,255,255,0.22));
+            box-sizing: border-box;
+        }
+        .intro-visual img,
+        .image-panel img,
+        .gallery-item img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .content-section {
+            padding: 2.2em 2.45em;
+        }
+        .section-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.1em;
+            margin-bottom: 1.25em;
+        }
+        .section-no {
+            flex: 0 0 auto;
+            width: 3.35em;
+            height: 3.35em;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: var(--primary-color);
+            font-weight: bold;
+        }
+        .section-heading h3 {
+            margin: 0.28em 0 0.15em;
+            color: var(--primary-color);
+            font-size: 1.571em;
+            line-height: 1.25;
+        }
+        .section-heading p {
+            margin: 0;
+            color: #8a97a8;
+            font-size: 0.929em;
+        }
+        .content-section p,
+        .content-section li {
+            color: var(--text-light);
+            font-size: 1em;
+            line-height: 1.95;
+        }
+        .content-section p {
+            margin: 0;
+        }
+        .content-section p + p {
+            margin-top: 0.9em;
+        }
+        .split-content {
+            display: grid;
+            grid-template-columns: minmax(0, 1.08fr) minmax(18em, 0.92fr);
+            gap: 1.8em;
+            align-items: center;
+        }
+        .split-content.reverse {
+            grid-template-columns: minmax(18em, 0.92fr) minmax(0, 1.08fr);
+        }
+        .image-panel {
+            min-height: 20em;
+            padding: 1.25em;
+            border-radius: 8px;
+            background: linear-gradient(145deg, rgba(13, 59, 133, 0.06), rgba(255,255,255,0.18));
+            border: 1px solid rgba(13, 59, 133, 0.08);
+            box-sizing: border-box;
+        }
+        .timeline-row {
+            display: grid;
+            grid-template-columns: 7.5em minmax(0, 1fr);
+            gap: 1.35em;
+            padding: 1.15em 0;
+            border-top: 1px solid var(--border-color);
+        }
+        .timeline-row:first-of-type {
+            border-top: 0;
+            padding-top: 0;
+        }
+        .timeline-year {
+            color: var(--primary-color);
+            font-size: 1.714em;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .timeline-row h4 {
+            margin: 0 0 0.45em;
+            color: var(--text-color);
+            font-size: 1.071em;
+        }
+        .direction-matrix {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1em 1.5em;
+        }
+        .research-item {
+            padding: 0.9em 0 0.9em 1em;
+            border-left: 3px solid rgba(13, 59, 133, 0.28);
+        }
+        .research-item h4 {
+            margin: 0 0 0.4em;
+            color: var(--primary-color);
+            font-size: 1.071em;
+        }
+        .research-item p {
+            font-size: 0.929em;
+            line-height: 1.85;
+        }
+        .campus-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1em;
+        }
+        .gallery-item {
+            min-height: 15em;
+            padding: 1em;
+            border-radius: 8px;
+            background: linear-gradient(145deg, rgba(13, 59, 133, 0.05), rgba(255,255,255,0.3));
+            border: 1px solid rgba(13, 59, 133, 0.08);
+            box-sizing: border-box;
+        }
+        .scenario-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.7em 1.4em;
             margin: 0;
             padding-left: 1.2em;
         }
-        .closing-panel li {
-            color: var(--text-light);
-            line-height: 1.9;
-        }
-        .closing-panel li + li {
-            margin-top: 0.45em;
-        }
-        @media screen and (max-width: 768px) {
-            .page-intro,
-            .summary-meta,
-            .direction-row,
-            .direction-row:nth-child(even),
-            .closing-panel {
+        @media screen and (max-width: 1024px) {
+            .college-layout,
+            .intro-hero,
+            .split-content,
+            .split-content.reverse {
                 grid-template-columns: 1fr;
             }
-            .page-summary {
+            .college-sidebar {
+                position: static;
+            }
+        }
+        @media screen and (max-width: 768px) {
+            .content-section,
+            .intro-copy {
                 padding: 1.35em;
             }
-            .page-summary .section-title {
-                font-size: 1.714em;
+            .intro-copy h2 {
+                font-size: 1.8em;
             }
-            .direction-row:nth-child(even) .direction-label,
-            .direction-row:nth-child(even) .direction-detail {
-                order: initial;
+            .hero-meta,
+            .direction-matrix,
+            .campus-gallery,
+            .scenario-list,
+            .timeline-row {
+                grid-template-columns: 1fr;
             }
-            .direction-label,
-            .direction-detail,
-            .page-side-nav {
-                padding: 1.25em;
-            }
-            .direction-label h3 {
-                font-size: 1.5em;
+            .intro-visual,
+            .image-panel,
+            .gallery-item {
+                min-height: 14em;
             }
         }
     </style>
@@ -228,9 +497,9 @@
             <nav class="nav-menu" id="siteNav">
                 <a href="../index.html">首页</a>
                 <a href="./research-introduction.html" class="active">研究所简介</a>
-                <a href="#">研究所教师</a>
-                <a href="#">新闻动态</a>
-                <a href="#">科研项目</a>
+                <a href="./teachers.html">研究所教师</a>
+                <a href="./news.html">新闻动态</a>
+                <a href="./projects.html">科研项目</a>
                 <a href="#">论文发表</a>
                 <a href="#">科研成果</a>
                 <a href="#">联系我们</a>
@@ -238,122 +507,126 @@
         </div>
     </header>
 
-    <div class="main-container intro-stack">
-        <section class="direction-section">
-            <article class="direction-row" id="direction-hpc">
-                <div class="direction-label">
-                    <div>
-                        <div class="direction-index">Direction 01</div>
-                        <h3>高性能计算</h3>
-                        <p>围绕多处理器、集群和并行环境开展研究，是研究所整体方向体系的基础支撑。</p>
-                    </div>
-                </div>
-                <div class="direction-detail">
-                    <h4>方向介绍</h4>
-                    <p>高性能计算面向由大量处理器或计算节点构成的计算环境，通过并行算法和协同调度机制，把复杂问题拆解为可并行执行的子任务，在集群各节点上同步推进计算与结果汇总，从而显著缩短大型任务的处理时间。</p>
-                    <p>在这一方向中，研究重点包括并行问题划分、节点间数据交换、运行时负载均衡、高吞吐任务组织以及分布式协同机制。研究所关注高性能集群在复杂科学计算、工程模拟和数据密集型分析中的适配能力，并推动相关方法在多学科科研场景中的应用。</p>
-                    <ul class="direction-points">
-                        <li>典型应用包括气象预报、流体力学、地质模拟、计算化学与生命科学计算。</li>
-                        <li>重点能力包括并行任务划分、分布式协同与高吞吐任务执行机制。</li>
-                    </ul>
-                </div>
-            </article>
+    <div class="main-container rp-page">
 
-            <article class="direction-row" id="direction-graph">
-                <div class="direction-label">
-                    <div>
-                        <div class="direction-index">Direction 02</div>
-                        <h3>图计算系统</h3>
-                        <p>面向海量图数据的存储、分析与计算，支撑复杂关联结构的高效处理。</p>
-                    </div>
-                </div>
-                <div class="direction-detail">
-                    <h4>方向介绍</h4>
-                    <p>图计算系统用于处理大规模图结构数据，适合社交网络分析、知识图谱、推荐系统、交通网络与网络安全等场景。随着 Web、大数据与智能分析的发展，图规模迅速扩大，天然图结构往往呈现高度倾斜分布，这对图遍历、图分析和图挖掘带来了显著挑战。</p>
-                    <p>研究所关注单机与分布式图处理系统的高效实现，涵盖以内存和核外处理为基础的多类图处理架构，并研究以遍历为中心和以计算为中心的图算法在不同硬件和系统环境中的优化方法。</p>
-                    <ul class="direction-points">
-                        <li>典型任务包括图遍历、最短路径、连通分量、PageRank 与三角计数等。</li>
-                        <li>典型应用覆盖语义网络分析、生物信息图、推荐系统与交通流图计算。</li>
-                    </ul>
-                </div>
-            </article>
 
-            <article class="direction-row" id="direction-dl">
-                <div class="direction-label">
-                    <div>
-                        <div class="direction-index">Direction 03</div>
-                        <h3>深度学习</h3>
-                        <p>利用多层神经网络学习数据的层次化表示，支撑多类型智能建模任务。</p>
-                    </div>
-                </div>
-                <div class="direction-detail">
-                    <h4>方向介绍</h4>
-                    <p>深度学习是机器学习的重要分支，通过多层神经网络对文字、图像、声音等数据进行分层表征学习，使系统具备更接近人工智能目标的分析与识别能力。该方向在模式识别、数据建模和复杂决策任务中已展现出显著优势。</p>
-                    <p>研究所围绕深度学习模型训练、推理优化和应用适配开展研究，重点关注其在搜索技术、数据挖掘、推荐系统、自然语言处理、多媒体理解与智能感知等方向的扩展与落地。</p>
-                    <ul class="direction-points">
-                        <li>强化模型训练效率、表示学习能力与应用可迁移性。</li>
-                        <li>服务推荐系统、语音处理、文本分析和多模态智能等任务。</li>
-                    </ul>
-                </div>
-            </article>
-
-            <article class="direction-row" id="direction-cv">
-                <div class="direction-label">
-                    <div>
-                        <div class="direction-index">Direction 04</div>
-                        <h3>计算机视觉</h3>
-                        <p>推动机器对图像与视频内容的识别、分析与理解，服务真实场景智能化。</p>
-                    </div>
-                </div>
-                <div class="direction-detail">
-                    <h4>方向介绍</h4>
-                    <p>计算机视觉是人工智能的重要组成部分，目标是使系统能够对图像和视频进行识别、检测、跟踪和语义理解。随着感知设备普及和智能应用加速发展，视觉技术已成为目前落地范围最广的人工智能技术之一。</p>
-                    <p>研究所关注视觉算法在复杂环境中的稳定性与实用性，推动该方向在安防监测、自动驾驶辅助、智慧医疗、消费终端和教育应用中的落地，同时关注数据治理和隐私保护等现实问题。</p>
-                    <ul class="direction-points">
-                        <li>重点研究识别、检测、跟踪与视频内容理解等核心任务。</li>
-                        <li>关注 5G、边缘智能与多场景部署对视觉技术演进的推动作用。</li>
-                    </ul>
-                </div>
-            </article>
-
-            <article class="direction-row" id="direction-green">
-                <div class="direction-label">
-                    <div>
-                        <div class="direction-index">Direction 05</div>
-                        <h3>绿色计算</h3>
-                        <p>面向计算基础设施的能效提升与可持续发展，推动低碳算力建设。</p>
-                    </div>
-                </div>
-                <div class="direction-detail">
-                    <h4>方向介绍</h4>
-                    <p>绿色计算强调在计算系统建设与运行过程中提高能源利用效率、减少资源消耗、降低电子废弃物影响，并通过节能设备、智能调度和系统优化手段，提升整体基础设施的可持续运行能力。</p>
-                    <p>研究所关注数据中心多维运行数据采集、能效建模、资源调度优化与节能策略设计，希望通过全局视角构建高效、智能、低碳的先进计算环境，为区域算力基础设施建设提供方法支撑。</p>
-                    <ul class="direction-points">
-                        <li>研究重点包括节能调度、资源优化配置、低碳运维与能效评估方法。</li>
-                        <li>服务绿色数据中心、区域算力基础设施与可持续科研平台建设。</li>
-                    </ul>
-                </div>
-            </article>
-        </section>
-
-        <section class="closing-panel">
-            <div class="section-box">
-                <div class="section-title">典型应用场景</div>
-                <div class="section-subtitle">APPLICATION SCENARIOS</div>
-                <ul>
-                    <li>面向科学计算和工程模拟的大规模并行任务。</li>
-                    <li>面向知识图谱、推荐系统与网络分析的图数据处理任务。</li>
-                    <li>面向图像、视频、文本与多模态数据的智能分析任务。</li>
-                    <li>面向绿色数据中心的能效提升与低碳算力优化任务。</li>
-                </ul>
-            </div>
-            <div class="section-box">
-                <div class="section-title">发展思路</div>
-                <div class="section-subtitle">DEVELOPMENT APPROACH</div>
-                <p>研究所将持续围绕“平台支撑、方向突破、应用转化、人才培养”四条主线推进建设，通过共享平台、联合项目和科研训练机制，推动研究成果从理论方法逐步走向可验证、可部署、可服务的实际能力。</p>
-                <p>未来，研究所将进一步强化先进计算与区域需求的深度结合，让高性能算力、云端资源与智能方法真正服务于科研创新与产业发展。</p>
+        <!-- ===== 研究所简介 Hero ===== -->
+        <section class="rp-hero" id="overview">
+            <div class="rp-hero-inner">
+                <div class="rp-hero-tag">Institute Profile</div>
+                <h1>高性能与云计算研究所</h1>
+                <p>青海大学高性能与云计算研究所（HPACC）致力于高性能计算、云计算、大数据分析及人工智能等前沿技术的研究与应用。我们拥有一支充满活力、勇于创新的科研团队，在分布式系统、并行算法、数据挖掘等领域取得了显著成果。</p>
             </div>
         </section>
+
+        <hr class="rp-divider">
+
+        <!-- ===== Direction 01 · 高性能计算 ===== -->
+        <section class="rp-section" id="direction-hpc">
+            <div class="rp-section-inner">
+                <div class="rp-section-text" data-aos="fade-right">
+                    <div class="rp-section-no">Direction <strong>01</strong></div>
+                    <h2>高性能计算</h2>
+                    <p class="rp-section-lead">指通常使用很多处理器或某一集群中组织的几台计算机的计算系统和环境。</p>
+                    <div class="rp-section-body">
+                        <p>高性能计算（High performance computing）指通常使用很多处理器（作为单个机器的一部分）或者某一集群中组织的几台计算机（作为单个计算资源操作）的计算系统和环境。高性能集群上运行的应用程序一般使用并行算法，把一个大的普通问题根据一定的规则分为许多小的子问题，在集群内的不同节点上进行计算，而这些小问题的处理结果，经过处理可合并为原问题的最终结果。</p>
+                        <p>高性能集群在计算过程中，各节点是协同工作的，它们分别处理大问题的一部分，并在处理中根据需要进行数据交换，各节点的处理结果都是最终结果的一部分。高性能集群的处理能力与集群的规模成正比，是集群内各节点处理能力之和，但这种集群一般没有高可用性。</p>
+                        <p>高性能计算机典型的应用领域有：气象预报——借助超级计算机能够模拟复杂的气流、洋流变化；计算化学——研究原子和分子尺度的小分子体系的行为和相互作用；以及流体力学、地质模拟等大型科学计算领域和人工智能的一些领域。</p>
+                    </div>
+                </div>
+                <figure class="rp-section-visual" data-aos="fade-left" data-aos-delay="150">
+                    <img src="../static/img/campus-line-building-01.png" alt="高性能计算">
+                </figure>
+            </div>
+        </section>
+
+        <hr class="rp-divider">
+
+
+        <!-- ===== Direction 02 · 图计算系统 ===== -->
+        <section class="rp-section rp-section--alt" id="direction-graph">
+            <div class="rp-section-inner">
+                <div class="rp-section-text" data-aos="fade-left">
+                    <div class="rp-section-no">Direction <strong>02</strong></div>
+                    <h2>图计算系统</h2>
+                    <p class="rp-section-lead">处理大规模图数据的专用计算系统，用于社交网络分析、知识图谱、推荐系统等领域。</p>
+                    <div class="rp-section-body">
+                        <p>图是一种重要的数据结构，它能充分表达自然界中事物的联系和依赖属性，在计算机领域中广泛应用。近年来随着 Web 2.0、大数据、社交网络、机器学习和数据挖掘等技术的高速发展，很多领域抽象出来的图规模呈指数级增长，图中边的数量可达亿万级别，给图计算带来了巨大挑战。</p>
+                        <p>研究图计算高效处理大规模图数据，能推动社交网络分析、语义 Web 分析、生物信息网络分析、自然语言处理和机器学习等新兴应用领域的发展。应用领域包括：流量图（监控道路事故、分析网络安全），生物图（研究药物模型），社交图（舆情分析、推荐系统）等。</p>
+                        <p>现有图处理系统可分为单机内存图处理系统、单机核外图处理系统、分布式内存图处理系统、分布式核外图处理系统。图算法则分为以遍历为中心的算法（BFS、DFS、SSSP 等）和以计算为中心的算法（PageRank、Triangle Count 等）。</p>
+                    </div>
+                </div>
+                <figure class="rp-section-visual" data-aos="fade-right" data-aos-delay="150">
+                    <img src="../static/img/campus-line-building-02-optimized.png" alt="图计算系统">
+                </figure>
+            </div>
+        </section>
+
+        <hr class="rp-divider">
+
+
+        <!-- ===== Direction 03 · 深度学习 ===== -->
+        <section class="rp-section" id="direction-dl">
+            <div class="rp-section-inner">
+                <div class="rp-section-text" data-aos="fade-right">
+                    <div class="rp-section-no">Direction <strong>03</strong></div>
+                    <h2>深度学习</h2>
+                    <p class="rp-section-lead">机器学习领域中的新研究方向，使机器更接近于人工智能的最初目标。</p>
+                    <div class="rp-section-body">
+                        <p>深度学习（DL, Deep Learning）是机器学习（ML, Machine Learning）领域中一个新的研究方向，它被引入机器学习使其更接近于最初的目标——人工智能（AI）。</p>
+                        <p>深度学习是学习样本数据的内在规律和表示层次，这些学习过程中获得的信息对诸如文字、图像和声音等数据的解释有很大的帮助。它的最终目标是让机器能够像人一样具有分析学习能力，能够识别文字、图像和声音等数据。深度学习是一个复杂的机器学习算法，在语音和图像识别方面取得的效果，远远超过先前相关技术。</p>
+                        <p>深度学习在搜索技术、数据挖掘、机器翻译、自然语言处理、多媒体学习、语音、推荐和个性化技术以及其他相关领域都取得了很多成果，使得人工智能相关技术取得了很大进步。</p>
+                    </div>
+                </div>
+                <figure class="rp-section-visual" data-aos="fade-left" data-aos-delay="150">
+                    <img src="../static/img/campus-line-building-03.png" alt="深度学习">
+                </figure>
+            </div>
+        </section>
+
+        <hr class="rp-divider">
+
+
+        <!-- ===== Direction 04 · 计算机视觉 ===== -->
+        <section class="rp-section rp-section--alt" id="direction-cv">
+            <div class="rp-section-inner">
+                <div class="rp-section-text" data-aos="fade-left">
+                    <div class="rp-section-no">Direction <strong>04</strong></div>
+                    <h2>计算机视觉</h2>
+                    <p class="rp-section-lead">人工智能的重要分支，致力于使计算机能够理解和分析图像及视频内容。</p>
+                    <div class="rp-section-body">
+                        <p>计算机视觉技术模拟人类或者其他生物视觉，将捕捉到的图像中的数据及信息进行分析识别、检测、跟踪等，真正去识别和理解这些图像。目前此项技术已经广泛应用到安防、自动驾驶、医疗、消费等，也是目前人工智能技术中落地最广的技术之一。</p>
+                        <p>未来趋势：随着 5G 带来低延迟、超高速、超大带宽，将加速推动计算机视觉在医疗、自动驾驶等行业的应用。随着技术发展，大量影像数据的保护也将成为关注重点。在未来，计算机视觉技术将越来越多地以各种形式进入人们日常生活，如人脸识别支付、购物图片识别等。</p>
+                    </div>
+                </div>
+                <figure class="rp-section-visual" data-aos="fade-right" data-aos-delay="150">
+                    <img src="../static/img/satellite-remote-sensing-center-blue-particles.png" alt="计算机视觉">
+                </figure>
+            </div>
+        </section>
+
+        <hr class="rp-divider">
+
+
+        <!-- ===== Direction 05 · 绿色计算 ===== -->
+        <section class="rp-section" id="direction-green">
+            <div class="rp-section-inner">
+                <div class="rp-section-text" data-aos="fade-right">
+                    <div class="rp-section-no">Direction <strong>05</strong></div>
+                    <h2>绿色计算</h2>
+                    <p class="rp-section-lead">本着对环境负责的原则使用计算机及相关资源，提高能效比，减少碳排放。</p>
+                    <div class="rp-section-body">
+                        <p>绿色计算（green computing）是本着对环境负责的原则使用计算机及相关资源的行为。绿色计算包括采用高效节能的中央处理器（CPU）、服务器和外围设备，减少资源消耗，妥善处理电子垃圾（e-waste）。</p>
+                        <p>在美国率先踏上绿色计算之路的是被称为能源之星（Energy Star）的自愿性标签授予计划。该活动由美国环境保护署于 1992 年提出，旨在提高各类硬件的使用效率。</p>
+                        <p>主要研究包括：通过采集数据中心的各方面数据，全方位考虑因素，设计出高效智能节能的方案，推动绿色数据中心建设和可持续算力服务。</p>
+                    </div>
+                </div>
+                <figure class="rp-section-visual" data-aos="fade-left" data-aos-delay="150">
+                    <img src="../static/img/campus-line-building-04.png" alt="绿色计算">
+                </figure>
+            </div>
+        </section>
+
     </div>
 
     <footer class="site-footer">
@@ -376,6 +649,63 @@
 
     <script src="../static/plugin/layui/layui.js"></script>
     <script>
+        /* ===== Animate on Scroll (IntersectionObserver) ===== */
+        (function () {
+            var items = Array.prototype.slice.call(document.querySelectorAll('[data-aos]'));
+
+            if (!items.length) {
+                return;
+            }
+
+            if (!('IntersectionObserver' in window)) {
+                items.forEach(function (el) {
+                    el.classList.add('aos-in');
+                });
+                return;
+            }
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.18) {
+                        var el = entry.target;
+                        var delay = parseInt(el.getAttribute('data-aos-delay') || '0');
+                        var oldTimer = el.getAttribute('data-aos-timer');
+
+                        if (oldTimer) {
+                            clearTimeout(parseInt(oldTimer));
+                        }
+
+                        var timer = setTimeout(function () {
+                            el.classList.add('aos-in');
+                            el.removeAttribute('data-aos-timer');
+                        }, delay);
+
+                        el.setAttribute('data-aos-timer', timer);
+                    } else if (!entry.isIntersecting) {
+                        var hiddenEl = entry.target;
+                        var pendingTimer = hiddenEl.getAttribute('data-aos-timer');
+
+                        if (pendingTimer) {
+                            clearTimeout(parseInt(pendingTimer));
+                            hiddenEl.removeAttribute('data-aos-timer');
+                        }
+
+                        hiddenEl.classList.remove('aos-in');
+                    }
+                });
+            }, {
+                threshold: [0, 0.18],
+                rootMargin: '0px'
+            });
+
+            document.documentElement.classList.add('aos-ready');
+
+            items.forEach(function (el) {
+                observer.observe(el);
+            });
+        })();
+
+        /* ===== Nav toggle ===== */
         layui.use(['element'], function(){
             var navToggle = document.querySelector('.nav-toggle');
             var navMenu = document.getElementById('siteNav');
