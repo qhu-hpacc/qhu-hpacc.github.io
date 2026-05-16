@@ -40,6 +40,9 @@ body {
     align-items: center;
     gap: 15px;
 }
+.logo-text {
+    min-width: 0;
+}
 .logo img {
     height: 50px;
 }
@@ -57,6 +60,7 @@ body {
 }
 .nav-menu {
     display: flex;
+    align-items: center;
     gap: 30px;
 }
 .nav-menu a {
@@ -68,6 +72,21 @@ body {
 .nav-menu a:hover, .nav-menu a.active {
     opacity: 0.8;
     font-weight: bold;
+}
+.nav-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.45em;
+    padding: 0.65em 0.9em;
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 0.5em;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+}
+.nav-toggle .layui-icon {
+    font-size: 1.1em;
 }
 
 /* Main Layout */
@@ -447,4 +466,153 @@ body {
 }
 .footer-links a:hover {
     color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+    .site-header {
+        padding: 0.85em 0;
+    }
+    .header-container {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.75em 0.85em;
+        align-items: center;
+        padding: 0 1em;
+    }
+    .logo {
+        grid-column: 1;
+        min-width: 0;
+        gap: 0.65em;
+        align-items: center;
+    }
+    .logo img {
+        height: 2.5em;
+    }
+    .logo-text h1 {
+        font-size: 1.286em;
+        line-height: 1.2;
+        letter-spacing: 0;
+    }
+    .logo-text p {
+        font-size: 0.714em;
+        line-height: 1.35;
+    }
+    .nav-toggle {
+        display: inline-flex;
+        grid-column: 2;
+        justify-self: end;
+        align-self: center;
+        margin-left: 0;
+        padding: 0.55em 0.8em;
+        white-space: nowrap;
+    }
+    .nav-menu {
+        display: none;
+        grid-column: 1 / -1;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding-top: 0.6em;
+        border-top: 1px solid rgba(255,255,255,0.18);
+    }
+    .nav-menu.is-open {
+        display: flex;
+    }
+    .nav-menu a {
+        display: block;
+        padding: 0.85em 0;
+        line-height: 1.4;
+        border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .nav-menu a:last-child {
+        border-bottom: none;
+    }
+    .main-container {
+        margin: 1em auto;
+        padding: 0 0.85em;
+    }
+    .hero-shell,
+    .top-card-row {
+        margin-bottom: 1em;
+    }
+    .hero-section {
+        aspect-ratio: auto;
+        min-height: 15em;
+        padding: 1em;
+    }
+    .hero-carousel .layui-carousel-ind {
+        bottom: 0.85em;
+    }
+    .hero-carousel .layui-carousel-arrow {
+        display: none !important;
+    }
+    .top-card-row,
+    .bottom-card-row,
+    .footer-container,
+    .footer-left {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1em;
+    }
+    .bottom-card-row {
+        margin-top: 0;
+    }
+    .top-card-column,
+    .bottom-card-column {
+        width: 100%;
+    }
+    .section-box {
+        padding: 1.25em;
+    }
+    .platform-grid {
+        grid-template-columns: 1fr;
+    }
+    .news-list li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35em;
+    }
+    .news-list li a {
+        width: 100%;
+        white-space: normal;
+    }
+    .coop-stats {
+        flex-wrap: wrap;
+        gap: 1em 0;
+    }
+    .stat-item {
+        width: 50%;
+    }
+    .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+    }
+    .footer-links a {
+        margin-left: 0;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .site-header {
+        padding: 0.75em 0;
+    }
+    .header-container {
+        gap: 0.65em 0.75em;
+        padding: 0 0.85em;
+    }
+    .logo img {
+        height: 2.2em;
+    }
+    .logo-text h1 {
+        font-size: 1.143em;
+    }
+    .logo-text p {
+        display: none;
+    }
+    .nav-toggle {
+        padding: 0.5em 0.72em;
+        font-size: 0.929em;
+    }
 }

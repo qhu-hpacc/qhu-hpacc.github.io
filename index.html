@@ -21,7 +21,11 @@
                     <p>Institute of High Performance and Cloud Computing</p>
                 </div>
             </div>
-            <nav class="nav-menu">
+            <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="siteNav">
+                <i class="layui-icon layui-icon-spread-left"></i>
+                <span>导航</span>
+            </button>
+            <nav class="nav-menu" id="siteNav">
                 <a href="#" class="active">首页</a>
                 <a href="#">研究所简介</a>
                 <a href="#">研究所教师</a>
@@ -209,6 +213,8 @@
         layui.use(['element', 'carousel'], function(){
             var element = layui.element;
             var carousel = layui.carousel;
+            var navToggle = document.querySelector('.nav-toggle');
+            var navMenu = document.getElementById('siteNav');
 
             carousel.render({
                 elem: '#heroCarousel',
@@ -220,6 +226,37 @@
                 arrow: 'hover',
                 indicator: 'inside'
             });
+
+            if (navToggle && navMenu) {
+                var setNavState = function(isOpen) {
+                    var icon = navToggle.querySelector('.layui-icon');
+
+                    navMenu.classList.toggle('is-open', isOpen);
+                    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+                    if (icon) {
+                        icon.className = 'layui-icon ' + (isOpen ? 'layui-icon-close' : 'layui-icon-spread-left');
+                    }
+                };
+
+                navToggle.addEventListener('click', function() {
+                    setNavState(!navMenu.classList.contains('is-open'));
+                });
+
+                navMenu.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth <= 768) {
+                            setNavState(false);
+                        }
+                    });
+                });
+
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768) {
+                        setNavState(false);
+                    }
+                });
+            }
         });
     </script>
 </body>
