@@ -9,30 +9,10 @@
     <!-- 引入自定义样式 -->
     <link rel="stylesheet" href="./static/css/style.css">
 </head>
-<body>
+<body data-nav="home">
 
     <!-- 头部导航 -->
-    <header class="site-header">
-        <div class="header-container">
-            <div class="logo">
-                <img src="./media/logo.png" alt="青海大学Logo" onerror="this.src='https://www.qhu.edu.cn/images/logo.png'">
-                <div class="logo-text">
-                    <h1>高性能与云计算研究所</h1>
-                    <p>Institute of High Performance and Cloud Computing</p>
-                </div>
-            </div>
-            <nav class="nav-menu">
-                <a href="#" class="active">首页</a>
-                <a href="#">研究所简介</a>
-                <a href="#">研究所教师</a>
-                <a href="#">新闻动态</a>
-                <a href="#">科研项目</a>
-                <a href="#">论文发表</a>
-                <a href="#">科研成果</a>
-                <a href="#">联系我们</a>
-            </nav>
-        </div>
-    </header>
+    <div id="site-header"></div>
 
     <!-- 主体内容 -->
     <div class="main-container">
@@ -206,19 +186,41 @@
     <!-- 引入 Layui JS -->
     <script src="./static/plugin/layui/layui.js"></script>
     <script>
-        layui.use(['element', 'carousel'], function(){
-            var element = layui.element;
-            var carousel = layui.carousel;
+        function loadSharedHeader() {
+            return fetch('./templates/base.html')
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(html) {
+                    var headerHost = document.getElementById('site-header');
+                    headerHost.innerHTML = html;
 
-            carousel.render({
-                elem: '#heroCarousel',
-                width: '100%',
-                height: '100%',
-                anim: 'fade',
-                autoplay: true,
-                interval: 5000,
-                arrow: 'hover',
-                indicator: 'inside'
+                    var currentNav = document.body.dataset.nav;
+                    var activeLink = headerHost.querySelector('[data-nav="' + currentNav + '"]');
+                    if (activeLink) {
+                        activeLink.classList.add('active');
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Header load failed:', error);
+                });
+        }
+
+        loadSharedHeader().finally(function() {
+            layui.use(['element', 'carousel'], function(){
+                var element = layui.element;
+                var carousel = layui.carousel;
+
+                carousel.render({
+                    elem: '#heroCarousel',
+                    width: '100%',
+                    height: '100%',
+                    anim: 'fade',
+                    autoplay: true,
+                    interval: 5000,
+                    arrow: 'hover',
+                    indicator: 'inside'
+                });
             });
         });
     </script>
