@@ -65,7 +65,7 @@ body {
     gap: clamp(10px, 2vw, 30px);
 }
 .nav-menu a {
-    color: #fff;
+    color: #fff; 
     text-decoration: none;
     font-size: clamp(11px, 1.1vw + 4px, 16px);
     white-space: nowrap;
@@ -561,8 +561,6 @@ body {
         margin-bottom: 1em;
     }
     .hero-section {
-        aspect-ratio: auto;
-        min-height: 15em;
         padding: 1em;
     }
     .hero-carousel .layui-carousel-ind {
