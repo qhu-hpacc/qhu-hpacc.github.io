@@ -61,18 +61,20 @@ body {
 .nav-menu {
     display: flex;
     align-items: center;
-    gap: 30px;
+    flex-wrap: nowrap;
+    gap: clamp(10px, 2vw, 30px);
 }
 .nav-menu a {
     color: #fff;
     text-decoration: none;
-    font-size: 1.143em;
+    font-size: clamp(11px, 1.1vw + 4px, 16px);
+    white-space: nowrap;
     transition: opacity 0.3s;
 }
 .nav-menu a:hover, .nav-menu a.active {
     opacity: 0.8;
     font-weight: bold;
-}
+} 
 .nav-toggle {
     display: none;
     align-items: center;
@@ -466,6 +468,28 @@ body {
 }
 .footer-links a:hover {
     color: #fff;
+}
+
+@media screen and (max-width: 1200px) {
+    .header-container {
+        padding: 0 15px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .logo {
+        gap: 10px;
+    }
+    .logo img {
+        height: 42px;
+    }
+    .logo-text h1 {
+        font-size: 1.4em;
+        letter-spacing: 0;
+    }
+    .logo-text p {
+        font-size: 0.75em;
+    }
 }
 
 @media screen and (max-width: 768px) {
